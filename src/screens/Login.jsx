@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -14,18 +14,13 @@ const Login = ({ navigation }) => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          position: "absolute",
-          bottom: 20,
-          marginRight: 20,
-          marginLeft: 20,
           justifyContent: "center",
           alignItems: "center",
-          borderRadius: 20,
         },
       }}
     >
       <Tab.Screen
-        name="Dashboard"
+        name="Home"
         component={Dashboard}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -33,15 +28,44 @@ const Login = ({ navigation }) => {
               <AntDesign
                 name="home"
                 size={24}
-                color={focused ? "red" : "blue"}
+                color={focused ? "rgb(59 130 246)" : "gray"}
               />
             </View>
           ),
         }}
       />
-      <Tab.Screen name="Bill" component={Bill} />
-      <Tab.Screen name="Cost" component={Cost} />
-      <Tab.Screen name="Setting" component={Setting} />
+      {/* <Tab.Screen name="Bill" component={Bill} />
+      <Tab.Screen name="Cost" component={Cost} /> */}
+      <Tab.Screen
+        name="Tạo đơn"
+        component={Bill}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View className="justify-center items-center">
+              <AntDesign
+                name="pluscircleo"
+                size={24}
+                color={focused ? "rgb(59 130 246)" : "gray"}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Cài đặt"
+        component={Setting}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <View className="justify-center items-center">
+              <AntDesign
+                name="setting"
+                size={24}
+                color={focused ? "rgb(59 130 246)" : "gray"}
+              />
+            </View>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };

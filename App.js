@@ -94,7 +94,7 @@ const Home = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 justify-center items-center w-full bg-white dark:bg-red-600"
+      className="flex-1 justify-center items-center w-full bg-white"
     >
       <SafeAreaView className="flex-1 w-full">
         <ScrollView
