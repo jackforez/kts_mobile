@@ -5,3 +5,4 @@ export { default as Bill } from "./Bill";
 export { default as Setting } from "./Setting";
 export { default as Cost } from "./Cost";
 export { default as Dashboard } from "./Dashboard";
+export { default as Resetpwd } from "./Resetpwd";
