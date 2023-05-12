@@ -8,7 +8,15 @@ import {
   Dimensions,
 } from "react-native";
 import React from "react";
-import { Ionicons, Entypo, AntDesign, FontAwesome } from "@expo/vector-icons";
+import {
+  Ionicons,
+  Foundation,
+  AntDesign,
+  FontAwesome,
+  FontAwesome5,
+  Feather,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { Image } from "react-native";
 const imgs = [
   "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fbanners%2Fbanner1.jpg?alt=media&token=ab56333f-e2b4-4bcd-80f5-1defaf4adc9f",
@@ -50,38 +58,159 @@ const Dashboard = () => {
         >
           {imgs.map((img, i) => {
             return (
-              <Image
-                key={i}
-                source={{ uri: img }}
-                className="w-[90vw] h-48 object-cover rounded-md"
-              />
+              <View key={i} className="w-[90vw] px-1">
+                <Image
+                  key={i}
+                  source={{ uri: img }}
+                  className="w-full h-48 object-cover rounded-md overflow-hidden"
+                />
+              </View>
             );
           })}
         </ScrollView>
-        <Text className="p-2 font-semibold text-indigo-900">Tiện ích</Text>
-        <View className="flex-row flex-wrap w-full bg-indigo-100 rounded-md p-1">
-          <TouchableOpacity className="w-1/4 justify-center items-center">
-            <View className="w-full justify-center items-center bg-white rounded-md p-2">
+        {/* end slider */}
+
+        {/* apps */}
+        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+          Đơn hàng
+        </Text>
+        <View className="flex-row flex-wrap w-full rounded-md">
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <Ionicons name="md-documents" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Danh sách</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
               <Ionicons name="document-text" size={28} color="rgb(49 46 129)" />
-              <Text className="pt-3">Đơn hàng</Text>
+              <Text className="text-xs pt-3">Chi tiết</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity className="w-1/4">
-            <View className="w-full justify-center items-center bg-white rounded-md">
-              <Entypo name="shop" size={30} color="rgb(49 46 129)" />
-              <Text className="pt-3">Shop</Text>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <MaterialCommunityIcons
+                name="file-document-edit"
+                size={28}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Tạo mới</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity className="w-1/4">
-            <View className="w-full justify-center items-center bg-white rounded-md">
-              <AntDesign name="user" size={30} color="rgb(49 46 129)" />
-              <Text className="py-3">Khách hàng</Text>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <FontAwesome5
+                name="map-marker-alt"
+                size={28}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Track</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity className="w-1/4">
-            <View className="w-full justify-center items-center bg-white rounded-md">
-              <FontAwesome name="dollar" size={30} color="rgb(49 46 129)" />
-              <Text className="p-3 text-xs">Đơn hàng</Text>
+        </View>
+        {/* customers */}
+        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+          Khách hàng
+        </Text>
+        <View className="flex-row flex-wrap w-full rounded-md">
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <AntDesign name="contacts" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Danh bạ</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <Feather name="user-check" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Chỉnh sửa</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <Feather name="user-plus" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Thêm mới</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <Feather name="user-minus" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Xóa</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        {/* partners */}
+        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+          Shop
+        </Text>
+        <View className="flex-row flex-wrap w-full rounded-md">
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <FontAwesome name="users" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Danh sách</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <FontAwesome5 name="user-edit" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Chỉnh sửa</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <FontAwesome5 name="user-plus" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Thêm mới</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <FontAwesome5
+                name="user-minus"
+                size={28}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Xóa</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        {/* Cost */}
+        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+          Đơn giá
+        </Text>
+        <View className="flex-row flex-wrap w-full rounded-md">
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <Foundation name="list" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Danh sách</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <MaterialCommunityIcons
+                name="playlist-edit"
+                size={28}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Chỉnh sửa</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <MaterialCommunityIcons
+                name="playlist-plus"
+                size={28}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Thêm mới</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <MaterialCommunityIcons
+                name="playlist-minus"
+                size={28}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Xóa</Text>
             </View>
           </TouchableOpacity>
         </View>
