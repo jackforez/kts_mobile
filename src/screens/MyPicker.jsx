@@ -1,4 +1,11 @@
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { search } from "../ultis/functions";
 import { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
@@ -14,73 +21,61 @@ const MyPicker = ({
   const [query, setQuery] = useState("");
   const [openDataTable, setOpenDataTable] = useState(false);
   const [selected, setSelected] = useState(placehoder);
-  const [selectedIndex, setSelectedIndex] = useState(-1);
   const sz =
-    size === "xs" ? "py-1 text-xs" : size === "sm" ? "py-2 text-sm" : "py-2.5";
+    size === "xs" ? "py-1 text-xs" : size === "sm" ? "py-2 text-sm" : "py-3";
   useEffect(() => {
     setSelected(placehoder);
   }, [placehoder]);
   return (
-    <View
-      className={`w-full border bg-white ${
-        openDataTable ? "border-primary-500" : "border-gray-300"
-      } rounded px-2 relative ${
-        disabled && "pointer-events-none bg-slate-200"
-      }`}
-    >
+    <View>
       <TouchableOpacity
+        className={`w-full border bg-white ${
+          openDataTable ? "border-indigo-900" : "border-gray-300"
+        } rounded px-2 ${disabled && "pointer-events-none bg-slate-200"}`}
         onPress={() => {
+          setQuery("");
           setOpenDataTable(!openDataTable);
         }}
+        disabled={disabled}
       >
         <View className={`${sz} flex-row justify-between`}>
           <Text className="truncate">{selected}</Text>
-          <Entypo name="chevron-down" size={24} color="black" />
+          <View className={`${openDataTable && "rotate-180"}`}>
+            <Entypo name="chevron-down" size={16} color="black" />
+          </View>
         </View>
       </TouchableOpacity>
 
-      <View
-        className={`absolute bg-white w-full right-0 top-[110%] ${
-          openDataTable && "border border-primary-500"
-        } rounded`}
-      >
-        <TextInput
-          className={`w-full ${sz} focus:outline-none rounded px-2 ${
-            !openDataTable && "hidden"
-          }`}
-          placeholder="Tìm kiếm"
-          onChangeText={(text) => {
-            setQuery(text);
-            setSelectedIndex(-1);
-          }}
-        />
-        <View
-          className={`${
-            openDataTable ? "max-h-36" : "h-0"
-          } overflow-y-auto duration-100`}
-        >
+      {openDataTable && (
+        <ScrollView className="rounded-md border border-gray-300 mt-1 max-h-72">
+          <TextInput
+            className={`w-full ${sz} focus:outline-none rounded px-2 bg-gray-50 ${
+              !openDataTable && "hidden"
+            }`}
+            placeholder="Tìm kiếm..."
+            onChangeText={(text) => {
+              setQuery(text);
+            }}
+          />
           {search(data, query, field).length > 0 ? (
             search(data, query, field).map((el, i) => {
               return (
-                // <View
-                //   key={i}
-                //   className={`hover:bg-green-500 truncate px-2 ${sz} ${
-                //     i === selectedIndex ? "bg-green-500" : ""
-                //   }`}
-                // >
-                <Text
-                  className="bg-green-500 p-3"
-                  onPress={(text) => {
-                    // setSelected(text);
-                    // output(text);
-                    // setSelectedIndex(i);
-                    // setOpenDataTable(false);
-                    console.log(text);
+                <TouchableOpacity
+                  key={i}
+                  onPress={() => {
+                    setSelected(el[toShow]);
+                    output(el[toShow]);
+                    setOpenDataTable(false);
                   }}
                 >
-                  {el[toShow]}
-                </Text>
-                // </View>
+                  <Text
+                    className={`hover:bg-green-500 truncate px-2 ${sz} ${
+                      el[toShow] === selected ? "bg-green-500" : ""
+                    }`}
+                  >
+                    {el[toShow]}
+                  </Text>
+                </TouchableOpacity>
               );
             })
           ) : (
@@ -88,8 +83,8 @@ const MyPicker = ({
               <Text>Không có dữ liệu phù hợp</Text>
             </View>
           )}
-        </View>
-      </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

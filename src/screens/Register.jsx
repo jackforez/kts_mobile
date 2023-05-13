@@ -32,7 +32,7 @@ const Register = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 justify-center items-center w-full bg-white dark:bg-red-600"
+      className="flex-1 justify-between items-center w-full bg-white dark:bg-red-600"
     >
       <SafeAreaView className="flex-1 w-full">
         <ScrollView
@@ -65,6 +65,16 @@ const Register = () => {
                     <TextInput
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="0123456789"
+                      onChangeText={(text) => {
+                        setPassword(text);
+                      }}
+                    />
+                    <Text className="text-indigo-900 text-start w-full font-semibold">
+                      Tên shop
+                    </Text>
+                    <TextInput
+                      className="w-full bg-white p-3 rounded-md border border-gray-200"
+                      placeholder="Sẽ hiển thị khi tạo bill"
                       onChangeText={(text) => {
                         setPassword(text);
                       }}
@@ -111,46 +121,36 @@ const Register = () => {
                         setPassword(text);
                       }}
                     />
-                    <View className="w-full z-10">
-                      <Text className="text-indigo-900 text-start w-full font-semibold">
-                        Tỉnh/Thành
-                      </Text>
-                      {/* <TextInput
-                      className="w-full bg-white p-3 rounded-md border border-gray-200"
-                      placeholder="Thành phố Hải Phòng"
-                      onChangeText={(text) => {
-                        setPassword(text);
-                      }}
-                    /> */}
+                    <View className="space-y-2">
                       <MyPicker
-                        placehoder={"Tỉnh/thành"}
+                        placehoder={"Tỉnh/Thành"}
                         data={cities}
                         field={["name_with_type"]}
                         toShow="name_with_type"
-                        size={"sm"}
+                        size={"md"}
                         output={setCity}
                       />
                     </View>
-                    <Text className="text-indigo-900 text-start w-full font-semibold">
-                      Quận/Huyện
-                    </Text>
-                    <TextInput
-                      className="w-full bg-white p-3 rounded-md border border-gray-200"
-                      placeholder="Huyện An Dương"
-                      onChangeText={(text) => {
-                        setPassword(text);
-                      }}
-                    />
-                    <Text className="text-indigo-900 text-start w-full font-semibold">
-                      Phường/Xã
-                    </Text>
-                    <TextInput
-                      className="w-full bg-white p-3 rounded-md border border-gray-200"
-                      placeholder="Xã An Đồng"
-                      onChangeText={(text) => {
-                        setPassword(text);
-                      }}
-                    />
+                    <View className="space-y-2">
+                      <MyPicker
+                        placehoder={"Quận/Huyện"}
+                        data={cities}
+                        field={["name_with_type"]}
+                        toShow="name_with_type"
+                        size={"md"}
+                        output={setCity}
+                      />
+                    </View>
+                    <View className="space-y-2">
+                      <MyPicker
+                        placehoder={"Phường/Xã"}
+                        data={cities}
+                        field={["name_with_type"]}
+                        toShow="name_with_type"
+                        size={"md"}
+                        output={setCity}
+                      />
+                    </View>
                   </View>
                   <View className="w-full mt-6">
                     <TouchableOpacity

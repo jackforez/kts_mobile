@@ -1,6 +1,8 @@
 export const search = (list, query, feild) => {
   return list.filter((el) =>
-    feild.some((key) => el[key]?.normalize("NFC").toLowerCase().includes(query))
+    feild.some((key) =>
+      el[key]?.normalize("NFC").toLowerCase().includes(query.toLowerCase())
+    )
   );
   // return list.filter((item) =>
   //   feild.some((key) => item[key]?.toLowerCase().includes(query))
