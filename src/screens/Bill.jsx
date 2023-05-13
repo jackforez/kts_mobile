@@ -7,11 +7,18 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 import { TextInput } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 const Bill = () => {
+  const navigation = useNavigation();
   const [shopPay, setShopPay] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
+  const [inputs, setInputs] = useState({});
+  const [checker, setCheker] = useState({
+    showSenderForm: false,
+    showRecieverForm: false,
+  });
   return (
     <SafeAreaView className="flex-1 items-center bg-white justify-between">
       <ScrollView
@@ -19,32 +26,66 @@ const Bill = () => {
         showsHorizontalScrollIndicator={false}
       >
         <View className="w-full space-y-1 h-full">
-          <View className="w-full px-2 rounded-md">
-            <View className="flex-row justify-between py-1 items-center">
-              <Text className="uppercase font-semibold text-indigo-900">
-                Người gửi
-              </Text>
-              <TouchableOpacity className="rounded-md p-2 border border-blue-500">
-                <Entypo name="pencil" size={18} color="rgb(59 130 246)" />
-              </TouchableOpacity>
+          {checker.showSenderForm ? (
+            <View className="w-full px-2 rounded-md">
+              <View className="flex-row justify-between py-1 items-center">
+                <Text className="uppercase font-semibold text-indigo-900">
+                  Danh sách người gửi
+                </Text>
+                <TouchableOpacity
+                  className="rounded-md p-2 border border-red-500"
+                  onPress={() =>
+                    setCheker((prev) => {
+                      return { ...prev, showSenderForm: false };
+                    })
+                  }
+                >
+                  <AntDesign name="close" size={18} color="red" />
+                </TouchableOpacity>
+              </View>
+              <View className="rounded-md bg-gray-100 p-1">
+                <Text className="font-semibold text-gray-700">Anh Văn</Text>
+                <Text className="font-semibold text-gray-700">Anh Văn</Text>
+                <Text className="font-semibold text-gray-700">Anh Văn</Text>
+                <Text className="font-semibold text-gray-700">Anh Văn</Text>
+              </View>
             </View>
-            <View className="flex-row flex-wrap rounded-md bg-gray-100 p-1">
-              <Text className="font-semibold text-gray-700">Anh Văn</Text>
-              <Entypo name="dot-single" size={16} color="black" />
-              <Text className="text-gray-700">0814800579</Text>
-              <Entypo name="dot-single" size={16} color="black" />
-              <Text className="text-gray-700">
-                766 Nguyễn Văn Linh, An Đồng, An Dương, TP. Hải Phòng
-              </Text>
+          ) : (
+            <View className="w-full px-2 rounded-md">
+              <View className="flex-row justify-between py-1 items-center">
+                <Text className="uppercase font-semibold text-indigo-900">
+                  Người gửi
+                </Text>
+                <TouchableOpacity
+                  className="rounded-md p-2 border border-blue-500"
+                  onPress={() =>
+                    setCheker((prev) => {
+                      return { ...prev, showSenderForm: true };
+                    })
+                  }
+                >
+                  <Entypo name="pencil" size={18} color="rgb(59 130 246)" />
+                </TouchableOpacity>
+              </View>
+              <View className="flex-row flex-wrap rounded-md bg-gray-100 p-1">
+                <Text className="font-semibold text-gray-700">Anh Văn</Text>
+                <Entypo name="dot-single" size={16} color="black" />
+                <Text className="text-gray-700">0814800579</Text>
+                <Entypo name="dot-single" size={16} color="black" />
+                <Text className="text-gray-700">
+                  766 Nguyễn Văn Linh, An Đồng, An Dương, TP. Hải Phòng
+                </Text>
+              </View>
             </View>
-          </View>
+          )}
+
           <View className="w-full px-2 rounded-md">
             <View className="flex-row justify-between py-1 items-center">
               <Text className="uppercase font-semibold text-indigo-900">
                 Người nhận
               </Text>
               <TouchableOpacity className="rounded-md p-2 border border-blue-500">
-                <Entypo name="pencil" size={18} color="rgb(59 130 246)" />
+                <AntDesign name="search1" size={16} color="rgb(59 130 246)" />
               </TouchableOpacity>
             </View>
             <View className="flex-row flex-wrap rounded-md bg-gray-100 p-1">
@@ -144,7 +185,6 @@ const Bill = () => {
               <View className="w-1/2 pr-1">
                 <TouchableOpacity
                   // onPress={() => navigation.navigate("Login")}
-
                   className="p-3.5 rounded-md border border-indigo-900 w-full justify-center items-center "
                 >
                   <Text className="text-indigo-900 font-semibold">Hủy</Text>
@@ -153,7 +193,6 @@ const Bill = () => {
               <View className="w-1/2 pl-1">
                 <TouchableOpacity
                   // onPress={() => navigation.navigate("Login")}
-
                   className="p-3.5 rounded-md bg-indigo-900 w-full justify-center items-center"
                 >
                   <Text className="text-white font-semibold">Tạo đơn</Text>

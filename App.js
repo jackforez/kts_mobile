@@ -19,6 +19,7 @@ import img1 from "./src/constant/logo.jpg";
 import logo from "./assets/logo.png";
 import { Login, Register, Resetpwd, Tracking } from "./src/screens";
 import { SvgXml } from "react-native-svg";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +80,14 @@ const Home = ({ navigation }) => {
   };
   const handleLogin = async () => {
     setLoading(true);
+    if (!username) {
+      Toast.show({
+        type: "error",
+        text1: "Tên đăng nhập/mật khẩu không hợp lệ",
+      });
+      setLoading(false);
+      return;
+    }
     try {
       const res = await ktsRequest.post("/auth/signin", {
         name: username,
@@ -330,6 +339,7 @@ export default function App() {
         <Stack.Screen name="Resetpwd" component={Resetpwd} />
         <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
+      <Toast />
     </NavigationContainer>
   );
 }
