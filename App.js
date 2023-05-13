@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -16,7 +16,7 @@ import { Link, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ktsRequest } from "./src/constant/connection";
 import img1 from "./src/constant/logo.jpg";
-import { Login, Register, Resetpwd, Tracking } from "./src/screens";
+import { Bill, Login, Register, Resetpwd, Tracking } from "./src/screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -94,6 +94,10 @@ const Home = ({ navigation }) => {
       Alert.alert("", "Sai tên đăng nhập hoặc mật khẩu", [{ text: "OK" }]);
     }
   };
+  //for test
+  useEffect(() => {
+    navigation.navigate("Bill");
+  }, []);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -328,6 +332,7 @@ export default function App() {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Bill" component={Bill} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Tracking" component={Tracking} />
         <Stack.Screen name="Resetpwd" component={Resetpwd} />

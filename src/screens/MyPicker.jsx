@@ -30,8 +30,8 @@ const MyPicker = ({
     <View>
       <TouchableOpacity
         className={`w-full border bg-white ${
-          openDataTable ? "border-indigo-900" : "border-gray-300"
-        } rounded px-2 ${disabled && "pointer-events-none bg-slate-200"}`}
+          openDataTable ? "border-indigo-900" : "border-gray-200"
+        } rounded-md px-2 ${disabled && "pointer-events-none bg-slate-200"}`}
         onPress={() => {
           setQuery("");
           setOpenDataTable(!openDataTable);
