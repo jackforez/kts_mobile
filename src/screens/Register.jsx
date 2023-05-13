@@ -8,11 +8,27 @@ import {
   ScrollView,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import img1 from "../constant/logo.jpg";
 import { Picker } from "@react-native-picker/picker";
+import MyPicker from "./MyPicker";
+import { ktsRequest } from "../constant/connection";
 
 const Register = () => {
+  const [city, setCity] = useState("");
+  const [cities, setCities] = useState([]);
+  useEffect(() => {
+    const getCities = async () => {
+      try {
+        const res = await ktsRequest.get("/cities");
+        const data = Object.values(res.data);
+        setCities(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCities();
+  }, []);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -95,16 +111,26 @@ const Register = () => {
                         setPassword(text);
                       }}
                     />
-                    <Text className="text-indigo-900 text-start w-full font-semibold">
-                      Tỉnh/Thành
-                    </Text>
-                    <TextInput
+                    <View className="w-full z-10">
+                      <Text className="text-indigo-900 text-start w-full font-semibold">
+                        Tỉnh/Thành
+                      </Text>
+                      {/* <TextInput
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="Thành phố Hải Phòng"
                       onChangeText={(text) => {
                         setPassword(text);
                       }}
-                    />
+                    /> */}
+                      <MyPicker
+                        placehoder={"Tỉnh/thành"}
+                        data={cities}
+                        field={["name_with_type"]}
+                        toShow="name_with_type"
+                        size={"sm"}
+                        output={setCity}
+                      />
+                    </View>
                     <Text className="text-indigo-900 text-start w-full font-semibold">
                       Quận/Huyện
                     </Text>
