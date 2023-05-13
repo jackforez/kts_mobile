@@ -15,8 +15,13 @@ import MyPicker from "./MyPicker";
 import { ktsRequest } from "../constant/connection";
 
 const Register = () => {
-  const [city, setCity] = useState("");
+  const [inputs, setInputs] = useState({});
   const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [cityCode, setCityCode] = useState("");
+  const [districtCode, setDistrictCode] = useState("");
+  const [wardCode, setWardCode] = useState("");
   useEffect(() => {
     const getCities = async () => {
       try {
@@ -29,6 +34,110 @@ const Register = () => {
     };
     getCities();
   }, []);
+  useEffect(() => {
+    const getDistricts = async () => {
+      try {
+        const cName = cities.find((city) => city.name_with_type == cityCode);
+        const resd = await ktsRequest.get(`/cities/districts/${cName.code}`);
+        const data = Object.values(resd.data);
+        setDistricts(data);
+        setInputs((prev) => {
+          return {
+            ...prev,
+            cityCode: cName.code,
+            cityName: cName.name,
+            cityFullName: cName.name_with_type,
+          };
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getDistricts();
+  }, [cityCode]);
+  useEffect(() => {
+    const getWards = async () => {
+      try {
+        const dName = districts.find((d) => d.name_with_type == districtCode);
+        const resw = await ktsRequest.get(`cities/wards/${dName.code}`);
+        const data = Object.values(resw.data);
+        setWards(data);
+        setInputs((prev) => {
+          return {
+            ...prev,
+            districtCode: dName.code,
+            districtName: dName.name,
+            districtFullName: dName.name_with_type,
+          };
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getWards();
+  }, [districtCode]);
+  useEffect(() => {
+    const getWard = () => {
+      try {
+        const wName = wards.find((w) => w.name_with_type === wardCode);
+        setInputs((prev) => {
+          return {
+            ...prev,
+            wardCode: wName?.code,
+            wardName: wName?.name,
+            wardFullName: wName?.name_with_type,
+          };
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    wardCode && getWard();
+  }, [wardCode]);
+
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (!inputs.phone || inputs.phone.length !== 10) {
+      alert("Số điện thoại không hợp lệ");
+      setLoading(false);
+      return;
+    }
+    if (!inputs.displayName) {
+      alert("Tên shop không được để trống!");
+      setLoading(false);
+      return;
+    }
+    if (!inputs.address) {
+      alert("Vui lòng nhập địa chỉ, tên đường!");
+      setLoading(false);
+      return;
+    }
+    if (!inputs.cityCode) {
+      alert("Vui lòng chọn Tỉnh/Thành!");
+      setLoading(false);
+      return;
+    }
+    if (!inputs.districtCode) {
+      alert("Vui lòng chọn Quận/Huyện!");
+      setLoading(false);
+      return;
+    }
+    if (!inputs.wardCode) {
+      alert("Vui lòng chọn Phường/Xã!");
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await ktsRequest.post("/auth/signup", inputs);
+      alert(res.data);
+      setLoading(false);
+    } catch (er) {
+      setLoading(false);
+      alert(er.response ? er.response.data : "Network Error");
+    }
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -128,27 +237,27 @@ const Register = () => {
                         field={["name_with_type"]}
                         toShow="name_with_type"
                         size={"md"}
-                        output={setCity}
+                        output={setCityCode}
                       />
                     </View>
                     <View className="space-y-2">
                       <MyPicker
                         placehoder={"Quận/Huyện"}
-                        data={cities}
+                        data={districts}
                         field={["name_with_type"]}
                         toShow="name_with_type"
                         size={"md"}
-                        output={setCity}
+                        output={setDistrictCode}
                       />
                     </View>
                     <View className="space-y-2">
                       <MyPicker
                         placehoder={"Phường/Xã"}
-                        data={cities}
+                        data={wards}
                         field={["name_with_type"]}
                         toShow="name_with_type"
                         size={"md"}
-                        output={setCity}
+                        output={setWardCode}
                       />
                     </View>
                   </View>

@@ -16,10 +16,7 @@ import { Link, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { ktsRequest } from "./src/constant/connection";
 import img1 from "./src/constant/logo.jpg";
-import logo from "./assets/logo.png";
 import { Login, Register, Resetpwd, Tracking } from "./src/screens";
-import { SvgXml } from "react-native-svg";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,10 +78,7 @@ const Home = ({ navigation }) => {
   const handleLogin = async () => {
     setLoading(true);
     if (!username) {
-      Toast.show({
-        type: "error",
-        text1: "Tên đăng nhập/mật khẩu không hợp lệ",
-      });
+      alert("Tên đăng nhập không được để trống");
       setLoading(false);
       return;
     }
@@ -339,7 +333,6 @@ export default function App() {
         <Stack.Screen name="Resetpwd" component={Resetpwd} />
         <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
-      <Toast />
     </NavigationContainer>
   );
 }
