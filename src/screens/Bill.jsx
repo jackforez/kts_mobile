@@ -14,7 +14,9 @@ import { search } from "../ultis/functions";
 import { data } from "../ultis/dummy";
 import { ktsRequest } from "../constant/connection";
 import MyPicker from "./MyPicker";
+import { useSelector } from "react-redux";
 const Bill = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const navigation = useNavigation();
   const [shopPay, setShopPay] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
@@ -200,12 +202,23 @@ const Bill = () => {
                 </TouchableOpacity>
               </View>
               <View className="flex-row flex-wrap rounded-md bg-gray-100 p-1">
-                <Text className="font-semibold text-gray-700">Anh Văn</Text>
-                <Entypo name="dot-single" size={16} color="black" />
-                <Text className="text-gray-700">0814800579</Text>
+                <Text className="font-semibold text-gray-700">
+                  {currentUser?.displayName || "Tên người gửi"}
+                </Text>
                 <Entypo name="dot-single" size={16} color="black" />
                 <Text className="text-gray-700">
-                  766 Nguyễn Văn Linh, An Đồng, An Dương, TP. Hải Phòng
+                  {currentUser?.phone || "Số điện thoại người gửi"}
+                </Text>
+                <Entypo name="dot-single" size={16} color="black" />
+                <Text className="text-gray-700">
+                  {currentUser.address +
+                    ", " +
+                    currentUser.wardFullName +
+                    ", " +
+                    currentUser.districtFullName +
+                    ", " +
+                    currentUser.cityFullName ||
+                    "766 Nguyễn Văn Linh, An Đồng, An Dương, TP. Hải Phòng"}
                 </Text>
               </View>
             </View>

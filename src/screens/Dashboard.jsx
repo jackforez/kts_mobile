@@ -18,6 +18,8 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { Image } from "react-native";
+import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 const imgs = [
   "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fbanners%2Fbanner1.jpg?alt=media&token=ab56333f-e2b4-4bcd-80f5-1defaf4adc9f",
   "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fbanners%2Fbanner2.jpg?alt=media&token=e16e39fd-1209-4e7b-896a-903d55ce3899",
@@ -26,6 +28,8 @@ const imgs = [
 const { width } = Dimensions.get("screen");
 const _h = width * 0.25;
 const Dashboard = () => {
+  const navigation = useNavigation();
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <SafeAreaView className="flex-1 items-center bg-white justify-between">
       <ScrollView
@@ -35,15 +39,21 @@ const Dashboard = () => {
       >
         {/* header */}
         <View className="flex-row justify-between w-full items-center">
-          <View className="flex-row items-center gap-2">
-            <View className="h-12 w-12 bg-indigo-900 rounded-full justify-center items-center">
-              <Text className="text-white font-bold">V</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Cài đặt")}>
+            <View className="flex-row items-center gap-2">
+              <View className="h-12 w-12 bg-indigo-900 rounded-full justify-center items-center">
+                <Text className="text-white font-bold">V</Text>
+              </View>
+              <View>
+                <Text className="text-base text-indigo-900">
+                  {currentUser?.displayName || "Ktscorp.vn"}
+                </Text>
+                <Text className="text-xs text-indigo-900">
+                  {currentUser?.phone || "0123456789"}
+                </Text>
+              </View>
             </View>
-            <View>
-              <Text className="text-base text-indigo-900">Jackforez</Text>
-              <Text className="text-xs text-indigo-900">0814800579</Text>
-            </View>
-          </View>
+          </TouchableOpacity>
           <View>
             <Ionicons name="notifications" size={28} color="rgb(49 46 129)" />
           </View>

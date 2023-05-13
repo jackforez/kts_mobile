@@ -18,12 +18,23 @@ import { ktsRequest } from "./src/constant/connection";
 import img1 from "./src/constant/logo.jpg";
 import { Bill, Login, Register, Resetpwd, Tracking } from "./src/screens";
 
+//redux
+import { persistor, store } from "./src/redux/store";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { onLoading } from "./src/redux/systemSlice";
+import { loaded } from "./src/redux/systemSlice";
+import { loginSuccess } from "./src/redux/userSlice";
+
+//navigation
 const Stack = createNativeStackNavigator();
 
 const Home = ({ navigation }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  const { loading, refresh } = useSelector((state) => state.system);
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [loginTab, setLoginTab] = useState(true);
   const [orderDetails, setOrderDetails] = useState({});
   const [orderId, setOrderId] = useState("");
@@ -51,10 +62,10 @@ const Home = ({ navigation }) => {
     );
   };
   const handleTracking = async () => {
-    setLoading(true);
+    dispatch(onLoading());
     if (!orderId) {
       alert("Mã vận đơn không được để trống");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     const config = {
@@ -68,18 +79,18 @@ const Home = ({ navigation }) => {
     await ktsRequest(config)
       .then(function (response) {
         setOrderDetails(response.data.data);
-        setLoading(false);
+        dispatch(onLoading());
       })
       .catch(function (error) {
-        setLoading(false);
+        dispatch(loaded());
         alert("Network Error!");
       });
   };
   const handleLogin = async () => {
-    setLoading(true);
+    dispatch(onLoading());
     if (!username) {
       alert("Tên đăng nhập không được để trống");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     try {
@@ -87,16 +98,19 @@ const Home = ({ navigation }) => {
         name: username,
         password: password,
       });
-      setLoading(false);
+      dispatch(loaded());
+      dispatch(loginSuccess(res.data));
       navigation.navigate("Login");
     } catch (error) {
-      setLoading(false);
+      dispatch(loaded());
       Alert.alert("", "Sai tên đăng nhập hoặc mật khẩu", [{ text: "OK" }]);
     }
   };
   //for test
   useEffect(() => {
-    navigation.navigate("Bill");
+    if (currentUser) {
+      return navigation.navigate("Login");
+    }
   }, []);
   return (
     <KeyboardAvoidingView
@@ -326,18 +340,22 @@ const Home = ({ navigation }) => {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Bill" component={Bill} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Tracking" component={Tracking} />
-        <Stack.Screen name="Resetpwd" component={Resetpwd} />
-        <Stack.Screen name="Register" component={Register} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Bill" component={Bill} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Tracking" component={Tracking} />
+            <Stack.Screen name="Resetpwd" component={Resetpwd} />
+            <Stack.Screen name="Register" component={Register} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
