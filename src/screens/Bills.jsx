@@ -6,9 +6,9 @@ import {
   Platform,
   KeyboardAvoidingView,
   TouchableOpacity,
-  StyleSheet,
+  RefreshControl,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { search, toVND } from "../ultis/functions";
@@ -16,11 +16,23 @@ import { ktsRequest } from "../ultis/connections";
 import { useDispatch, useSelector } from "react-redux";
 import { loaded, onLoading } from "../redux/systemSlice";
 import { Feather } from "@expo/vector-icons";
+import { STATUS } from "../constant/ktsconst";
 const Card = ({ data }) => {
+  const getStatus = (_status) => {
+    return (
+      STATUS.find((item) =>
+        item.name.toLocaleLowerCase().includes(_status.toLocaleLowerCase())
+      ) || STATUS[0]
+    );
+  };
   return (
-    <TouchableOpacity onPress={() => console.log(data)}>
+    <TouchableOpacity>
       <View className="rounded-md bg-white mt-1">
-        <View className="justify-between flex-row p-2 bg-red-500 rounded-t-md">
+        <View
+          className={`${
+            getStatus(data.status).bgColor
+          } justify-between flex-row p-2  rounded-t-md`}
+        >
           <Text className="text-white font-semibold">{data.orderNumber}</Text>
           <Text className="text-white">
             {new Date(data.createdAt).toLocaleDateString()}
@@ -29,8 +41,8 @@ const Card = ({ data }) => {
         <View className="p-2 flex-row border-b border-x rounded-b-md border-gray-200">
           <View className="w-3/4">
             <Text className="font-semibold">{data.toName}</Text>
-            <Text>{data.toPhone}</Text>
-            <Text>
+            <Text className="text-xs">{data.toPhone}</Text>
+            <Text className="text-xs">
               {data.toAddress +
                 ", " +
                 data.toWard +
@@ -40,7 +52,7 @@ const Card = ({ data }) => {
                 data.toCity}
             </Text>
           </View>
-          <Text className="font-bold text-lg italic text-gray-800 w-1/4">
+          <Text className="font-bold text-lg text-indigo-900 w-1/4 my-auto">
             {toVND(data.shopAmount)}
           </Text>
         </View>
@@ -54,7 +66,7 @@ const Bills = () => {
   const dispatch = useDispatch();
   const { token } = currentUser;
   const navigation = useNavigation();
-
+  const [refreshing, setRefreshing] = useState(false);
   const [bills, setBills] = useState([]);
   const [query, setQuery] = useState("");
   useEffect(() => {
@@ -80,8 +92,14 @@ const Bills = () => {
       }
     };
     fetch();
-  }, [refresh]);
+  }, [refresh, refreshing]);
   const handleClick = async () => {};
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -106,6 +124,9 @@ const Bills = () => {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           className="w-full"
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           <View className="w-full h-full flex-1 px-2">
             {/* content */}
