@@ -10,9 +10,8 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import img1 from "../constant/logo.jpg";
-import { Picker } from "@react-native-picker/picker";
 import MyPicker from "./MyPicker";
-import { ktsRequest } from "../constant/connection";
+import { ktsRequest } from "../ultis/connections";
 
 const Register = () => {
   const [inputs, setInputs] = useState({});

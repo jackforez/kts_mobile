@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
-import { ktsRequest } from "../constant/connection";
+import { ktsRequest } from "../ultis/connections";
 
 const Tracking = () => {
   const [loading, setLoading] = useState(false);
