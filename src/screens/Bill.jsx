@@ -29,7 +29,7 @@ const Bill = () => {
   const [query, setQuery] = useState("");
   const [inputs, setInputs] = useState({});
   const [revievers, setRecievers] = useState([]);
-  const [sender, setSender] = useState({});
+  const [sender, setSender] = useState(currentUser || {});
   const [senders, setSenders] = useState([]);
   const [checker, setCheker] = useState({
     showSenderForm: false,
@@ -119,7 +119,7 @@ const Bill = () => {
       return;
     }
     if (!inputs.weight || inputs.weight <= 0) {
-      alert("Khối lượng không hợp lệ");
+      alert("Trọng lượng không hợp lệ");
       dispatch(loaded());
       return;
     }
@@ -158,7 +158,7 @@ const Bill = () => {
           toWardFullName: inputs.wardFullName || "",
           itemName: inputs.itemName || "bưu phẩm",
           itemQauntity: inputs.itemQauntity || 1,
-          weight: inputs.weight || 100,
+          weight: inputs.weight || 1,
           cod: inputs.cod || 0,
           note: inputs.note,
           partner: "VNP",
@@ -173,6 +173,7 @@ const Bill = () => {
         }
       );
       alert(res.data);
+      setInputs({});
       dispatch(loaded());
     } catch (err) {
       console.log(err);
@@ -483,7 +484,7 @@ const Bill = () => {
                   </Text>
                   <TextInput
                     className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                    placeholder="gram"
+                    placeholder="(gram)"
                     keyboardType="numeric"
                     onChangeText={(text) => {
                       setInputs((prev) => {
@@ -509,11 +510,11 @@ const Bill = () => {
                 </View>
               </View>
               <Text className="text-indigo-900 pt-2 text-start w-full font-semibold">
-                Số tiền cần thu hộ
+                Số tiền cần thu hộ (VND)
               </Text>
               <TextInput
                 className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                placeholder="VNĐ"
+                placeholder="0"
                 keyboardType="numeric"
                 onChangeText={(text) => {
                   setInputs((prev) => {

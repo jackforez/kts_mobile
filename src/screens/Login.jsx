@@ -22,7 +22,7 @@ import { useNavigation } from "@react-navigation/native";
 //navigation
 
 const Login = () => {
-  const { loading, refresh } = useSelector((state) => state.system);
+  const { loading } = useSelector((state) => state.system);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
@@ -71,7 +71,7 @@ const Login = () => {
     await ktsRequest(config)
       .then(function (response) {
         setOrderDetails(response.data.data);
-        dispatch(onLoading());
+        dispatch(loaded());
       })
       .catch(function (error) {
         dispatch(loaded());
@@ -95,11 +95,11 @@ const Login = () => {
       dispatch(loginSuccess(res.data));
       return navigation.navigate("Layout");
     } catch (error) {
+      console.log(error);
       dispatch(loaded());
       alert("Sai tên đăng nhập hoặc mật khẩu");
     }
   };
-  //for test
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}

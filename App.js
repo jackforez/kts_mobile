@@ -1,7 +1,7 @@
 import { persistor, store } from "./src/redux/store";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { MyApp } from "./src/screens";
+import MyApp from "./src/screens/MyApp";
 
 export default function App() {
   return (
