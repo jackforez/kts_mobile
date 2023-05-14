@@ -5,24 +5,47 @@ import {
   ScrollView,
   Platform,
   KeyboardAvoidingView,
+  TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { search } from "../ultis/functions";
+import { search, toVND } from "../ultis/functions";
 import { ktsRequest } from "../ultis/connections";
 import { useDispatch, useSelector } from "react-redux";
 import { loaded, onLoading } from "../redux/systemSlice";
 import { Feather } from "@expo/vector-icons";
 const Card = ({ data }) => {
   return (
-    <View className="border border-gray-200 rounded bg-white p-2 mt-1">
-      <Text>{data.toName}</Text>
-      <Text>{data.toPhone}</Text>
-      <Text>card</Text>
-      <Text>card</Text>
-      <Text>card</Text>
-    </View>
+    <TouchableOpacity onPress={() => console.log(data)}>
+      <View className="rounded-md bg-white mt-1">
+        <View className="justify-between flex-row p-2 bg-red-500 rounded-t-md">
+          <Text className="text-white font-semibold">{data.orderNumber}</Text>
+          <Text className="text-white">
+            {new Date(data.createdAt).toLocaleDateString()}
+          </Text>
+        </View>
+        <View className="p-2 flex-row border-b border-x rounded-b-md border-gray-200">
+          <View className="w-3/4">
+            <Text className="font-semibold">{data.toName}</Text>
+            <Text>{data.toPhone}</Text>
+            <Text>
+              {data.toAddress +
+                ", " +
+                data.toWard +
+                ", " +
+                data.toDistrict +
+                ", " +
+                data.toCity}
+            </Text>
+          </View>
+          <Text className="font-bold text-lg italic text-gray-800 w-1/4">
+            {toVND(data.shopAmount)}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 const Bills = () => {
