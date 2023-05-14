@@ -183,7 +183,7 @@ const Bill = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 justify-between items-center w-full bg-white dark:bg-red-600"
+      className="flex-1 justify-between items-center w-full bg-white"
     >
       <SafeAreaView className="flex-1 items-center bg-white justify-between">
         <ScrollView
