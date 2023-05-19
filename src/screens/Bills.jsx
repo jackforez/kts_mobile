@@ -16,8 +16,29 @@ import { ktsRequest } from "../ultis/connections";
 import { useDispatch, useSelector } from "react-redux";
 import { loaded, onLoading } from "../redux/systemSlice";
 import { Feather } from "@expo/vector-icons";
-import { STATUS } from "../constant/ktsconst";
 const Card = ({ data }) => {
+  const STATUS = [
+    {
+      id: 0,
+      bgColor: "bg-blue-500",
+      name: "Đơn mới",
+    },
+    {
+      id: 1,
+      bgColor: "bg-yellow-400",
+      name: "Đang giao",
+    },
+    {
+      id: 2,
+      bgColor: "bg-green-500",
+      name: "Giao xong",
+    },
+    {
+      id: 3,
+      bgColor: "bg-red-500",
+      name: "Đã hủy",
+    },
+  ];
   const getStatus = (_status) => {
     return (
       STATUS.find((item) =>
@@ -69,6 +90,7 @@ const Bills = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [bills, setBills] = useState([]);
   const [query, setQuery] = useState("");
+
   useEffect(() => {
     dispatch(onLoading());
     const fetch = async () => {
