@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { onLoading, loaded } from "../redux/systemSlice";
 import { loginSuccess } from "../redux/userSlice";
 import { useNavigation } from "@react-navigation/native";
-
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 //navigation
 
 const Login = () => {
@@ -30,6 +30,7 @@ const Login = () => {
   const [loginTab, setLoginTab] = useState(true);
   const [orderDetails, setOrderDetails] = useState({});
   const [orderId, setOrderId] = useState("");
+  const [hidePassword, setHidePassword] = useState(true);
   const status = [
     {
       title: "thành công",
@@ -154,24 +155,49 @@ const Login = () => {
                       <Text className="text-indigo-900 text-start w-full font-semibold">
                         Tài khoản
                       </Text>
-                      <TextInput
-                        className="w-full bg-white p-3 rounded-md border border-gray-200"
-                        placeholder="Username"
-                        onChangeText={(text) => {
-                          setUsername(text);
-                        }}
-                      />
+                      <View className="w-full relative">
+                        <TextInput
+                          className="w-full bg-white p-3 rounded-md border border-gray-200"
+                          placeholder="Username"
+                          onChangeText={(text) => {
+                            setUsername(text);
+                          }}
+                        />
+                        <View className="absolute right-2 top-2">
+                          <AntDesign name="user" size={24} color="#6b7280" />
+                        </View>
+                      </View>
                       <Text className="text-indigo-900 text-start w-full font-semibold">
                         Mật khẩu
                       </Text>
-                      <TextInput
-                        className="w-full bg-white p-3 rounded-md border border-gray-200"
-                        placeholder="password"
-                        secureTextEntry={true}
-                        onChangeText={(text) => {
-                          setPassword(text);
-                        }}
-                      />
+                      <View className="w-full relative">
+                        <TextInput
+                          className="w-full bg-white p-3 rounded-md border border-gray-200"
+                          placeholder="password"
+                          secureTextEntry={hidePassword}
+                          onChangeText={(text) => {
+                            setPassword(text);
+                          }}
+                        />
+                        <TouchableOpacity
+                          className="absolute right-2 top-2"
+                          onPress={() => setHidePassword(!hidePassword)}
+                        >
+                          {hidePassword ? (
+                            <Ionicons
+                              name="md-eye-off-outline"
+                              size={24}
+                              color="#6b7280"
+                            />
+                          ) : (
+                            <Ionicons
+                              name="md-eye-outline"
+                              size={24}
+                              color="#6b7280"
+                            />
+                          )}
+                        </TouchableOpacity>
+                      </View>
                     </View>
                     <View className="w-full justify-center items-end">
                       <TouchableOpacity

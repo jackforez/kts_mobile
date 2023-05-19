@@ -65,9 +65,7 @@ const Bill = () => {
           },
         });
         setSenders(res.data);
-        console.log(res.data);
       } catch (error) {
-        console.log(error);
         alert.error(error);
       }
     };
