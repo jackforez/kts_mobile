@@ -6,6 +6,7 @@ import {
   Switch,
   ScrollView,
   Dimensions,
+  Linking,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -293,13 +294,20 @@ const Dashboard = () => {
         >
           {data.map((d, i) => {
             return (
-              <View key={i} className="w-[45vw] px-1">
-                <Image
-                  key={i}
-                  source={{ uri: d.imgs[0] }}
-                  className="w-full h-24 object-cover rounded-md overflow-hidden"
-                />
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  Linking.openURL(`https://dichoho.top/products/${d._id}`);
+                }}
+                key={i}
+              >
+                <View className="w-[45vw] px-1">
+                  <Image
+                    key={i}
+                    source={{ uri: d.imgs[0] }}
+                    className="w-full h-24 object-cover rounded-md overflow-hidden"
+                  />
+                </View>
+              </TouchableOpacity>
             );
           })}
         </ScrollView>

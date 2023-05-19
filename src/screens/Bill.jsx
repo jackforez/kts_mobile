@@ -57,6 +57,23 @@ const Bill = () => {
     checker.showRecieverForm && fetchCustomers();
   }, [checker.showRecieverForm]);
   useEffect(() => {
+    const fetchShop = async () => {
+      try {
+        const res = await ktsRequest.get(`/users/children`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setSenders(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+        alert.error(error);
+      }
+    };
+    checker.showSenderForm && fetchShop();
+  }, [checker.showSenderForm]);
+  useEffect(() => {
     const getCities = async () => {
       try {
         const res = await ktsRequest.get("/cities");
@@ -216,8 +233,8 @@ const Bill = () => {
                       setQuery(text);
                     }}
                   />
-                  {search(revievers, query, ["phone", "name"]).length > 0 ? (
-                    search(revievers, query, ["phone", "name"]).map((el, i) => {
+                  {search(senders, query, ["phone", "name"]).length > 0 ? (
+                    search(senders, query, ["phone", "name"]).map((el, i) => {
                       return (
                         <View
                           key={i}
@@ -327,8 +344,8 @@ const Bill = () => {
                       setQuery(text);
                     }}
                   />
-                  {search(data, query, ["phone", "name"]).length > 0 ? (
-                    search(data, query, ["phone", "name"]).map((el, i) => {
+                  {search(revievers, query, ["phone", "name"]).length > 0 ? (
+                    search(revievers, query, ["phone", "name"]).map((el, i) => {
                       return (
                         <View
                           key={i}
