@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector } from "react-redux";
-import { Bills, Layout, Login, Register, Resetpwd } from ".";
+import { Bills, Customers, Layout, Login, Register, Resetpwd } from ".";
 const Stack = createNativeStackNavigator();
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -16,6 +16,7 @@ const App = () => {
           <>
             <Stack.Screen name="Layout" component={Layout} />
             <Stack.Screen name="Bills" component={Bills} />
+            <Stack.Screen name="Customers" component={Customers} />
           </>
         ) : (
           <>

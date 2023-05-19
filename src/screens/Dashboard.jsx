@@ -257,10 +257,15 @@ const Dashboard = () => {
           >
             <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
               <Ionicons name="md-documents" size={28} color="rgb(49 46 129)" />
-              <Text className="text-xs pt-3">Danh sách</Text>
+              <Text className="text-xs pt-3">Đơn hàng</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+          <TouchableOpacity
+            className="w-1/4 justify-center items-center px-1"
+            onPress={() => {
+              return navigation.navigate("Customers");
+            }}
+          >
             <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
               <AntDesign name="contacts" size={28} color="rgb(49 46 129)" />
               <Text className="text-xs pt-3">Danh bạ</Text>
