@@ -27,6 +27,9 @@ export const textAvatar = (text) => {
     );
   }
 };
+export const textAvatarOne = (text) => {
+  return text.charAt().toUpperCase();
+};
 export const testKey = (event, inputText) => {
   const regex = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
   if (!regex.test(inputText)) {
