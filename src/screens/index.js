@@ -7,5 +7,6 @@ export { default as Bills } from "./Bills";
 export { default as Customers } from "./Customers";
 export { default as Setting } from "./Setting";
 export { default as Cost } from "./Cost";
+export { default as Shops } from "./Shops";
 export { default as Dashboard } from "./Dashboard";
 export { default as Resetpwd } from "./Resetpwd";

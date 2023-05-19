@@ -272,7 +272,12 @@ const Dashboard = () => {
             </View>
           </TouchableOpacity>
           {currentUser.role !== "shop" && (
-            <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <TouchableOpacity
+              className="w-1/4 justify-center items-center px-1"
+              onPress={() => {
+                return navigation.navigate("Shops");
+              }}
+            >
               <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
                 <FontAwesome name="users" size={28} color="rgb(49 46 129)" />
                 <Text className="text-xs pt-3">Shop</Text>
@@ -280,7 +285,12 @@ const Dashboard = () => {
             </TouchableOpacity>
           )}
           {currentUser.role !== "shop" && (
-            <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <TouchableOpacity
+              className="w-1/4 justify-center items-center px-1"
+              onPress={() => {
+                return navigation.navigate("Cost");
+              }}
+            >
               <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
                 <Foundation name="list" size={28} color="rgb(49 46 129)" />
                 <Text className="text-xs pt-3">Đơn giá</Text>
@@ -309,7 +319,7 @@ const Dashboard = () => {
                   <Image
                     key={i}
                     source={{ uri: d.imgs[0] }}
-                    className="w-full h-24 object-cover rounded-md overflow-hidden"
+                    className="w-full aspect-square object-cover rounded-md overflow-hidden"
                   />
                 </View>
               </TouchableOpacity>

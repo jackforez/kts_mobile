@@ -410,7 +410,7 @@ const Bill = () => {
                   >
                     <AntDesign
                       name="search1"
-                      size={16}
+                      size={18}
                       color="rgb(59 130 246)"
                     />
                   </TouchableOpacity>
