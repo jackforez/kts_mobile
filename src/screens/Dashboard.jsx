@@ -81,10 +81,10 @@ const Dashboard = () => {
         {/* end slider */}
 
         {/* apps */}
-        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+        {/* <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
           Đơn hàng
-        </Text>
-        <View className="flex-row flex-wrap w-full rounded-md">
+        </Text> */}
+        {/* <View className="flex-row flex-wrap w-full rounded-md">
           <TouchableOpacity
             className="w-1/4 justify-center items-center px-1"
             onPress={() => {
@@ -122,12 +122,12 @@ const Dashboard = () => {
               <Text className="text-xs pt-3">Track</Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         {/* customers */}
-        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+        {/* <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
           Khách hàng
-        </Text>
-        <View className="flex-row flex-wrap w-full rounded-md">
+        </Text> */}
+        {/* <View className="flex-row flex-wrap w-full rounded-md">
           <TouchableOpacity className="w-1/4 justify-center items-center px-1">
             <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
               <AntDesign name="contacts" size={28} color="rgb(49 46 129)" />
@@ -152,12 +152,12 @@ const Dashboard = () => {
               <Text className="text-xs pt-3">Xóa</Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         {/* partners */}
-        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+        {/* <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
           Shop
-        </Text>
-        <View className="flex-row flex-wrap w-full rounded-md">
+        </Text> */}
+        {/* <View className="flex-row flex-wrap w-full rounded-md">
           <TouchableOpacity className="w-1/4 justify-center items-center px-1">
             <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
               <FontAwesome name="users" size={28} color="rgb(49 46 129)" />
@@ -186,12 +186,12 @@ const Dashboard = () => {
               <Text className="text-xs pt-3">Xóa</Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         {/* Cost */}
-        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+        {/* <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
           Đơn giá
-        </Text>
-        <View className="flex-row flex-wrap w-full rounded-md">
+        </Text> */}
+        {/* <View className="flex-row flex-wrap w-full rounded-md">
           <TouchableOpacity className="w-1/4 justify-center items-center px-1">
             <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
               <Foundation name="list" size={28} color="rgb(49 46 129)" />
@@ -228,6 +228,44 @@ const Dashboard = () => {
               <Text className="text-xs pt-3">Xóa</Text>
             </View>
           </TouchableOpacity>
+        </View> */}
+        <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
+          Tiện ích
+        </Text>
+        <View className="flex-row flex-wrap w-full rounded-md">
+          <TouchableOpacity
+            className="w-1/4 justify-center items-center px-1"
+            onPress={() => {
+              return navigation.navigate("Bills");
+            }}
+          >
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <Ionicons name="md-documents" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Danh sách</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <AntDesign name="contacts" size={28} color="rgb(49 46 129)" />
+              <Text className="text-xs pt-3">Danh bạ</Text>
+            </View>
+          </TouchableOpacity>
+          {currentUser.role !== "shop" && (
+            <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+              <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+                <FontAwesome name="users" size={28} color="rgb(49 46 129)" />
+                <Text className="text-xs pt-3">Shop</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          {currentUser.role !== "shop" && (
+            <TouchableOpacity className="w-1/4 justify-center items-center px-1">
+              <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+                <Foundation name="list" size={28} color="rgb(49 46 129)" />
+                <Text className="text-xs pt-3">Đơn giá</Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
