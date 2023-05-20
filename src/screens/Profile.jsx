@@ -113,7 +113,7 @@ const Profile = ({ route }) => {
     getFullAddress();
   }, [cityCode, districtCode, wardCode]);
 
-  const handleAddCost = async (userId, cost_name) => {
+  const handleAddCost = async () => {
     const config = {
       method: "post",
       url: "/users/addcost",
@@ -123,7 +123,7 @@ const Profile = ({ route }) => {
       },
       data: {
         partnerID: userId,
-        cost_name,
+        cost_name: costName,
       },
     };
     await ktsRequest(config)
@@ -137,30 +137,6 @@ const Profile = ({ route }) => {
           : alert("Network Error!");
       });
   };
-  // const handleRemoveCost = async (userId, cost_name) => {
-  //   const config = {
-  //     method: "post",
-  //     url: "/users/removecost",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     data: {
-  //       partnerID: userId,
-  //       cost_name,
-  //     },
-  //   };
-  //   await ktsRequest(config)
-  //     .then(function (res) {
-  //       res.status === 200 ? alert(res.data) : alert(res.data);
-  //       dispatch(onRefreh());
-  //     })
-  //     .catch(function (error) {
-  //       error.response
-  //         ? alert(error.response.data.message)
-  //         : alert("Network Error!");
-  //     });
-  // };
   const handleRemoveCost = async (userId, cost_name) => {
     try {
       const res = await ktsRequest.post(
@@ -180,6 +156,59 @@ const Profile = ({ route }) => {
       dispatch(onRefreh());
     } catch (error) {
       console.log(error);
+    }
+  };
+  const handleChangePwd = async () => {
+    dispatch(onLoading());
+    if (!newPass) {
+      alert("Mật khẩu mới không được để trống");
+      dispatch(loaded());
+      return;
+    }
+    if (newPass !== rePass) {
+      alert("Mật khẩu mới / xác nhận mật khẩu mới không trùng khớp");
+      dispatch(loaded());
+      return;
+    }
+    try {
+      await ktsRequest.post(
+        `v2/users/changepwd/${user?._id}`,
+        { password: "ktscorp.vn", newpwd: newPass },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert("Thay đổi mật khẩu đối tác thành công");
+      setOpenChangePwd(false);
+      dispatch(loaded());
+    } catch (error) {
+      alert(error.response ? error.response.data : "Network Error!");
+      setOpenChangePwd(false);
+      dispatch(loaded());
+    }
+  };
+  const handleChangeInfo = async () => {
+    dispatch(onLoading());
+    try {
+      const res = await ktsRequest.put(
+        `users/${user._id}`,
+        { ...user, updatedBy: currentUser._id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert("Cập nhật thông tin đối tác thành công");
+      dispatch(loaded());
+      dispatch(onRefreh());
+    } catch (error) {
+      dispatch(loaded());
+      alert(error.response ? error.response.data : "Network Error!");
     }
   };
   return (
@@ -222,70 +251,53 @@ const Profile = ({ route }) => {
             <View className="mb-2">
               <View className="flex-row justify-between items-center mb-2">
                 <Text className="font-semibold uppercase">mức giá áp dụng</Text>
-                <TouchableOpacity
-                  className={`rounded-md p-2 border ${
-                    openAddCost ? "border-red-500" : "border-blue-500"
-                  }`}
-                  onPress={() => setOpenAddCost(!openAddCost)}
-                >
-                  {openAddCost ? (
-                    <AntDesign name="close" size={18} color="red" />
-                  ) : (
+                {openAddCost ? (
+                  <View className="flex-row gap-2">
+                    <TouchableOpacity
+                      className="rounded-md p-2 border border-red-500 "
+                      onPress={() => setOpenAddCost(false)}
+                    >
+                      <AntDesign name="close" size={18} color="#ef4444" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className="rounded-md p-2 border border-green-500 "
+                      onPress={handleAddCost}
+                    >
+                      <AntDesign name="check" size={18} color="#22c55e" />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    className="rounded-md p-2 border border-blue-500"
+                    onPress={() => setOpenAddCost(true)}
+                  >
                     <Entypo name="pencil" size={18} color="rgb(59 130 246)" />
-                  )}
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
               </View>
               <View>
                 {user.cost?.length > 0 ? (
-                  <View>
-                    <View className="flex-row gap-4 w-full flex-wrap">
-                      {user.cost.map((c, i) => {
-                        return (
-                          <TouchableOpacity
-                            disabled={!openAddCost}
+                  <View className="flex-row gap-4 w-full flex-wrap">
+                    {user.cost.map((c, i) => {
+                      return (
+                        <TouchableOpacity
+                          disabled={!openAddCost}
+                          className={`${
+                            openAddCost ? "bg-red-500" : "bg-slate-100"
+                          } rounded-md py-3 px-5`}
+                          key={i}
+                          onPress={() => handleRemoveCost(userId, c)}
+                        >
+                          <Text
                             className={`${
-                              openAddCost ? "bg-red-500" : "bg-slate-100"
-                            } rounded-md py-3 px-5`}
-                            key={i}
-                            onPress={() => handleRemoveCost(userId, c)}
+                              openAddCost ? "text-white" : "text-black"
+                            }`}
                           >
-                            <Text
-                              className={`${
-                                openAddCost ? "text-white" : "text-black"
-                              }`}
-                            >
-                              {c}
-                            </Text>
-                          </TouchableOpacity>
-                        );
-                      })}
-                    </View>
-                    {openAddCost && (
-                      <View className="mt-2 flex-row justify-between">
-                        <View className="w-4/5">
-                          <MyPicker
-                            placehoder="Chọn mức giá"
-                            data={cost}
-                            field={["costName"]}
-                            toShow="costName"
-                            size={"md"}
-                            output={setCostName}
-                          />
-                        </View>
-                        <View className="justify-end">
-                          <TouchableOpacity
-                            className="rounded-md py-2.5 px-3 border border-green-500 "
-                            onPress={() => handleAddCost(userId, costName)}
-                          >
-                            <FontAwesome
-                              name="floppy-o"
-                              size={20}
-                              color="#22c55e"
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    )}
+                            {c}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
                   </View>
                 ) : (
                   <View className="bg-slate-100 rounded py-3 px-2">
@@ -295,24 +307,49 @@ const Profile = ({ route }) => {
                     </Text>
                   </View>
                 )}
+                {openAddCost && (
+                  <View className="mt-2">
+                    <MyPicker
+                      placehoder="Chọn mức giá"
+                      data={cost}
+                      field={["costName"]}
+                      toShow="costName"
+                      size={"md"}
+                      output={setCostName}
+                    />
+                  </View>
+                )}
               </View>
             </View>
             <View className="space-y-2 mb-2">
               <View className="flex-row justify-between items-center">
                 <Text className="font-semibold uppercase">Bảo mật</Text>
-                <TouchableOpacity
-                  className={`rounded-md p-2 border ${
-                    openChangePwd ? "border-red-500" : "border-blue-500"
-                  }`}
-                  onPress={() => setOpenChangePwd(!openChangePwd)}
-                >
-                  {openChangePwd ? (
-                    <AntDesign name="close" size={18} color="red" />
-                  ) : (
+
+                {openChangePwd ? (
+                  <View className="flex-row gap-2">
+                    <TouchableOpacity
+                      className="rounded-md p-2 border border-red-500 "
+                      onPress={() => setOpenChangePwd(false)}
+                    >
+                      <AntDesign name="close" size={18} color="#ef4444" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className="rounded-md p-2 border border-green-500 "
+                      onPress={handleChangePwd}
+                    >
+                      <AntDesign name="check" size={18} color="#22c55e" />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    className="rounded-md p-2 border border-blue-500"
+                    onPress={() => setOpenChangePwd(true)}
+                  >
                     <Entypo name="pencil" size={18} color="rgb(59 130 246)" />
-                  )}
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
               </View>
+
               {openChangePwd ? (
                 <View className="space-y-2">
                   <TextInput
@@ -321,6 +358,7 @@ const Profile = ({ route }) => {
                     onChangeText={(text) => {
                       setNewPass(text);
                     }}
+                    secureTextEntry={true}
                   />
                   <TextInput
                     className="w-full bg-white p-3 rounded-md border border-gray-200"
@@ -328,6 +366,7 @@ const Profile = ({ route }) => {
                     onChangeText={(text) => {
                       setRePass(text);
                     }}
+                    secureTextEntry={true}
                   />
                 </View>
               ) : (
@@ -343,18 +382,29 @@ const Profile = ({ route }) => {
                 <Text className="font-semibold uppercase">
                   Thông tin cơ bản
                 </Text>
-                <TouchableOpacity
-                  className={`rounded-md p-2 border ${
-                    openChangeInfo ? "border-red-500" : "border-blue-500"
-                  }`}
-                  onPress={() => setOpenChangeInfo(!openChangeInfo)}
-                >
-                  {openChangeInfo ? (
-                    <AntDesign name="close" size={18} color="red" />
-                  ) : (
+                {openChangeInfo ? (
+                  <View className="flex-row gap-2">
+                    <TouchableOpacity
+                      className="rounded-md p-2 border border-red-500 "
+                      onPress={() => setOpenChangeInfo(false)}
+                    >
+                      <AntDesign name="close" size={18} color="#ef4444" />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className="rounded-md p-2 border border-green-500 "
+                      onPress={handleChangeInfo}
+                    >
+                      <AntDesign name="check" size={18} color="#22c55e" />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <TouchableOpacity
+                    className="rounded-md p-2 border border-blue-500"
+                    onPress={() => setOpenChangeInfo(true)}
+                  >
                     <Entypo name="pencil" size={18} color="rgb(59 130 246)" />
-                  )}
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                )}
               </View>
 
               <TextInput
@@ -376,7 +426,8 @@ const Profile = ({ route }) => {
                   !openChangeInfo && "bg-slate-100"
                 }`}
                 placeholder="Số điện thoại"
-                value={user.phone}
+                value={user.phone?.toString()}
+                keyboardType="numeric"
                 onChangeText={(text) => {
                   setUser((prev) => {
                     return { ...prev, phone: text };

@@ -99,7 +99,7 @@ const Shops = () => {
     >
       <SafeAreaView className="flex-1 items-center bg-gray-50 w-full justify-between relative">
         {/* header */}
-        <Text className="p-2 mx-auto">Đơn giá</Text>
+        <Text className="p-2 mx-auto">Shop</Text>
         <View className="relative pb-2 w-full px-2">
           <TextInput
             className="px-2 py-3 bg-white border border-gray-200 rounded-md"
