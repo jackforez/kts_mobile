@@ -45,7 +45,7 @@ const Dashboard = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-      } catch (error) {
+      } catch (err) {
         if (err.response) {
           if (err.response.data.status === 403) {
             alert("Phiên làm việc hết hạn, vui lòng đăng nhập lại!");

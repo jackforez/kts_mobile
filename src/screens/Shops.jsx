@@ -31,6 +31,7 @@ import {
 import Modal from "./Modal";
 const Card = ({ data, setData, showEdit }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   return (
     <View className="rounded-md bg-white mt-1 border border-gray-200 px-2 py-3">
       <View className="flex-row justify-center items-center">
@@ -45,7 +46,12 @@ const Card = ({ data, setData, showEdit }) => {
           <Text className="text-sm font-semibold">{data.displayName}</Text>
           <Text className="text-xs">{data.phone}</Text>
         </View>
-        <TouchableOpacity className="w-1/12">
+        <TouchableOpacity
+          className="w-1/12"
+          onPress={() => {
+            navigation.navigate("Profile", { userId: data._id });
+          }}
+        >
           <Entypo name="chevron-right" size={24} color="black" />
         </TouchableOpacity>
       </View>
