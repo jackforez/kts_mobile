@@ -34,6 +34,8 @@ const Profile = ({ route }) => {
   const [openAddCost, setOpenAddCost] = useState(false);
   const [openChangePwd, setOpenChangePwd] = useState(false);
   const [openChangeInfo, setOpenChangeInfo] = useState(false);
+  const [newPass, setNewPass] = useState("");
+  const [rePass, setRePass] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -317,14 +319,14 @@ const Profile = ({ route }) => {
                     className="w-full bg-white p-3 rounded-md border border-gray-200"
                     placeholder="Mật khẩu mới"
                     onChangeText={(text) => {
-                      setUsername(text);
+                      setNewPass(text);
                     }}
                   />
                   <TextInput
                     className="w-full bg-white p-3 rounded-md border border-gray-200"
                     placeholder="Xác nhận mật khẩu mới"
                     onChangeText={(text) => {
-                      setUsername(text);
+                      setRePass(text);
                     }}
                   />
                 </View>
