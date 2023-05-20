@@ -10,9 +10,9 @@ import { search } from "../ultis/functions";
 import { useEffect, useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 const MyPicker = ({
-  placehoder,
+  placehoder = "",
   size,
-  data,
+  data = [],
   field,
   toShow = "ktscorp.vn",
   output,
@@ -24,14 +24,14 @@ const MyPicker = ({
   const sz =
     size === "xs" ? "py-1 text-xs" : size === "sm" ? "py-2 text-sm" : "py-3";
   useEffect(() => {
-    setSelected(placehoder);
+    setSelected(placehoder || data[0][toShow]);
   }, [placehoder]);
   return (
     <View>
       <TouchableOpacity
         className={`w-full border bg-white ${
           openDataTable ? "border-indigo-900" : "border-gray-200"
-        } rounded-md px-2 ${disabled && "pointer-events-none bg-slate-200"}`}
+        } rounded-md px-2 ${disabled && "pointer-events-none bg-slate-100"}`}
         onPress={() => {
           setQuery("");
           setOpenDataTable(!openDataTable);
