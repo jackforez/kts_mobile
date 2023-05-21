@@ -86,7 +86,7 @@ const Profile = ({ route }) => {
         const resd = await ktsRequest.get(`/cities/districts/${cName.code}`);
         const data = Object.values(resd.data);
         setDistricts(data);
-        setCityCode(cName.name_with_type);
+        // setCityCode(cName.name_with_type);
 
         data.findIndex((el) => el.name_with_type.includes(districtCode)) < 0 &&
           setDistrictCode(data[0].name_with_type);
@@ -109,7 +109,7 @@ const Profile = ({ route }) => {
         const resw = await ktsRequest.get(`cities/wards/${dName.code}`);
         const data = Object.values(resw.data);
         setWards(data);
-        setDistrictCode(dName.name_with_type);
+        // setDistrictCode(dName.name_with_type);
         data.findIndex((el) => el.name_with_type.includes(wardCode)) < 0 &&
           setWardCode(data[0].name_with_type);
         setUser((prev) => {
