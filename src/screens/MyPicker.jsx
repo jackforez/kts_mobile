@@ -24,7 +24,7 @@ const MyPicker = ({
   const sz =
     size === "xs" ? "py-1 text-xs" : size === "sm" ? "py-2 text-sm" : "py-3";
   useEffect(() => {
-    setSelected(placehoder);
+    setSelected(placehoder || data[0]);
   }, [placehoder]);
   return (
     <View>
