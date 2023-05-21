@@ -17,6 +17,7 @@ const MyPicker = ({
   toShow = "ktscorp.vn",
   output,
   disabled = false,
+  required = "",
 }) => {
   const [query, setQuery] = useState("");
   const [openDataTable, setOpenDataTable] = useState(false);
@@ -81,7 +82,7 @@ const MyPicker = ({
             })
           ) : (
             <View className="p-2">
-              <Text>Không có dữ liệu phù hợp</Text>
+              <Text>{required || "Không có dữ liệu phù hợp"}</Text>
             </View>
           )}
         </ScrollView>

@@ -12,7 +12,7 @@ import { loaded, onLoading, onRefreh } from "../redux/systemSlice";
 import { ktsRequest } from "../ultis/connections";
 import { textAvatar } from "../ultis/functions";
 import { TextInput } from "react-native";
-import { Entypo, AntDesign, FontAwesome } from "@expo/vector-icons";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 
 import MyPicker from "./MyPicker";
 
@@ -79,7 +79,6 @@ const Profile = ({ route }) => {
     };
     getCities();
   }, []);
-
   useEffect(() => {
     const getDistricts = async () => {
       try {
@@ -128,7 +127,7 @@ const Profile = ({ route }) => {
   useEffect(() => {
     const getWard = () => {
       try {
-        const wName = wards.find((w) => w.name_with_type === wardCode);
+        const wName = wards.find((w) => w.name_with_type == wardCode);
         setWardCode(wName.name_with_type);
         setUser((prev) => {
           return {
@@ -142,45 +141,6 @@ const Profile = ({ route }) => {
     };
     getWard();
   }, [wardCode]);
-  // useEffect(() => {
-  //   const getFullAddress = async () => {
-  //     try {
-  //       const cName = cities.find((c) => c.name_with_type == cityCode);
-  //       const resd = await ktsRequest.get(`/cities/districts/${cName.code}`);
-  //       const datad = Object.values(resd.data);
-  //       setCityCode(cName.name_with_type);
-  //       setDistricts(datad);
-  //       datad.findIndex((el) => el.name_with_type.includes(districtCode)) < 0 &&
-  //         setDistrictCode(datad[0].name_with_type);
-  //       const dName = districts.find((d) => d.name_with_type == districtCode);
-  //       const resw = await ktsRequest.get(`cities/wards/${dName.code}`);
-  //       const dataw = Object.values(resw.data);
-  //       setDistrictCode(dName.name_with_type);
-  //       setWards(dataw);
-  //       dataw.findIndex((el) => el.name_with_type.includes(wardCode)) < 0 &&
-  //         setWardCode(dataw[0].name_with_type);
-  //       const wName = wards.find((w) => w.name_with_type == wardCode);
-  //       setWardCode(wName.name_with_type);
-  //       setUser((prev) => {
-  //         return {
-  //           ...prev,
-  //           cityCode: cName.code,
-  //           cityName: cName.name,
-  //           cityFullName: cName.name_with_type,
-  //           districtCode: dName.code,
-  //           districtName: dName.name,
-  //           districtFullName: dName.name_with_type,
-  //           wardCode: wName?.code,
-  //           wardName: wName?.name,
-  //           wardFullName: wName?.name_with_type,
-  //         };
-  //       });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getFullAddress();
-  // }, [cityCode, districtCode, wardCode]);
   const handleAddCost = async () => {
     const config = {
       method: "post",
@@ -551,6 +511,7 @@ const Profile = ({ route }) => {
                   toShow="name_with_type"
                   size={"md"}
                   output={setDistrictCode}
+                  required="Chọn tỉnh thành trước"
                 />
               </View>
               <View className="mt-2">
@@ -562,6 +523,7 @@ const Profile = ({ route }) => {
                   toShow="name_with_type"
                   size={"md"}
                   output={setWardCode}
+                  required="Chọn quận huyện trước"
                 />
               </View>
             </View>
