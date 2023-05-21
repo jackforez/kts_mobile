@@ -565,8 +565,9 @@ const Bill = () => {
                 Ghi chú
               </Text>
               <TextInput
-                className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
+                className="max-w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
                 placeholder="Ghi chú của shop"
+                multiline={true}
                 onChangeText={(text) => {
                   setInputs((prev) => {
                     return { ...prev, note: text };
