@@ -47,6 +47,7 @@ const Profile = ({ route }) => {
         });
         setUser(resUser.data);
       } catch (error) {
+        console.log(error);
         alert(error);
       }
     };
@@ -75,44 +76,119 @@ const Profile = ({ route }) => {
         const data = Object.values(res.data);
         setCities(data);
       } catch (error) {
-        console.log(error);
+        console.log(`getCities ${error}`);
       }
     };
     getCities();
   }, []);
-  useEffect(() => {
-    const getFullAddress = async () => {
-      try {
-        const cName = cities.find((c) => c.name_with_type == cityCode);
-        const resd = await ktsRequest.get(`/cities/districts/${cName.code}`);
-        const datad = Object.values(resd.data);
-        setDistricts(datad);
-        const dName = districts.find((d) => d.name_with_type == districtCode);
-        const resw = await ktsRequest.get(`cities/wards/${dName.code}`);
-        const dataw = Object.values(resw.data);
-        setWards(dataw);
-        const wName = wards.find((w) => w.name_with_type == wardCode);
-        setUser((prev) => {
-          return {
-            ...prev,
-            cityCode: cName.code,
-            cityName: cName.name,
-            cityFullName: cName.name_with_type,
-            districtCode: dName.code,
-            districtName: dName.name,
-            districtFullName: dName.name_with_type,
-            wardCode: wName?.code,
-            wardName: wName?.name,
-            wardFullName: wName?.name_with_type,
-          };
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getFullAddress();
-  }, [cityCode, districtCode, wardCode]);
 
+  // useEffect(() => {
+  //   const getDistricts = async () => {
+  //     try {
+  //       const cName = cities.find((city) => city.name_with_type == cityCode);
+  //       const resd = await ktsRequest.get(`/cities/districts/${cName.code}`);
+  //       const data = Object.values(resd.data);
+  //       setDistricts(data);
+  //       setCityCode(cName.name_with_type);
+
+  //       data.findIndex((el) => el.name_with_type.includes(districtCode)) < 0 &&
+  //         setDistrictCode(data[0].name_with_type);
+  //       setUser((prev) => {
+  //         return {
+  //           ...prev,
+  //           cityCode: cName.code,
+  //           cityName: cName.name,
+  //           cityFullName: cName.name_with_type,
+  //         };
+  //       });
+  //     } catch (error) {
+  //       console.log(`getDistricts ${error}`);
+  //     }
+  //   };
+  //   getDistricts();
+  // }, [cityCode]);
+  // useEffect(() => {
+  //   const getWards = async () => {
+  //     try {
+  //       const dName = districts.find((d) => d.name_with_type == districtCode);
+  //       const resw = await ktsRequest.get(`cities/wards/${dName.code}`);
+  //       const data = Object.values(resw.data);
+  //       setWards(data);
+  //       setDistrictCode(dName?.name_with_type);
+  //       data.findIndex((el) => el.name_with_type.includes(wardCode)) < 0 &&
+  //         setWardCode(data[0].name_with_type);
+  //       setUser((prev) => {
+  //         return {
+  //           ...prev,
+  //           districtCode: dName.code,
+  //           districtName: dName.name,
+  //           districtFullName: dName.name_with_type,
+  //         };
+  //       });
+  //     } catch (error) {
+  //       console.log(`getWards ${error}`);
+  //     }
+  //   };
+  //   getWards();
+  // }, [districtCode]);
+  // useEffect(() => {
+  //   const getWard = () => {
+  //     try {
+  //       const wName = wards.find((w) => w.name_with_type === wardCode);
+  //       setWardCode(wName.name_with_type);
+  //       setUser((prev) => {
+  //         return {
+  //           ...prev,
+  //           wardCode: wName.code,
+  //           wardName: wName.name,
+  //           wardFullName: wName.name_with_type,
+  //         };
+  //       });
+  //     } catch (error) {
+  //       console.log(`getWard ${error}`);
+  //     }
+  //   };
+  //   getWard();
+  // }, [wardCode]);
+  // useEffect(() => {
+  //   const getFullAddress = async () => {
+  //     try {
+  //       const cName = cities.find((c) => c.name_with_type == cityCode);
+  //       const resd = await ktsRequest.get(`/cities/districts/${cName.code}`);
+  //       const datad = Object.values(resd.data);
+  //       setCityCode(cName.name_with_type);
+  //       setDistricts(datad);
+  //       datad.findIndex((el) => el.name_with_type.includes(districtCode)) < 0 &&
+  //         setDistrictCode(datad[0].name_with_type);
+  //       const dName = districts.find((d) => d.name_with_type == districtCode);
+  //       const resw = await ktsRequest.get(`cities/wards/${dName.code}`);
+  //       const dataw = Object.values(resw.data);
+  //       setDistrictCode(dName.name_with_type);
+  //       setWards(dataw);
+  //       dataw.findIndex((el) => el.name_with_type.includes(wardCode)) < 0 &&
+  //         setWardCode(dataw[0].name_with_type);
+  //       const wName = wards.find((w) => w.name_with_type == wardCode);
+  //       setWardCode(wName.name_with_type);
+  //       setUser((prev) => {
+  //         return {
+  //           ...prev,
+  //           cityCode: cName.code,
+  //           cityName: cName.name,
+  //           cityFullName: cName.name_with_type,
+  //           districtCode: dName.code,
+  //           districtName: dName.name,
+  //           districtFullName: dName.name_with_type,
+  //           wardCode: wName?.code,
+  //           wardName: wName?.name,
+  //           wardFullName: wName?.name_with_type,
+  //         };
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   getFullAddress();
+  // }, [cityCode, districtCode, wardCode]);
   const handleAddCost = async () => {
     const config = {
       method: "post",
@@ -386,7 +462,10 @@ const Profile = ({ route }) => {
                   <View className="flex-row gap-2">
                     <TouchableOpacity
                       className="rounded-md p-2 border border-red-500 "
-                      onPress={() => setOpenChangeInfo(false)}
+                      onPress={() => {
+                        setOpenChangeInfo(false);
+                        dispatch(onRefreh());
+                      }}
                     >
                       <AntDesign name="close" size={18} color="#ef4444" />
                     </TouchableOpacity>
