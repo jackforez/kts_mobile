@@ -21,13 +21,7 @@ import {
   onOpenModal,
   onRefreh,
 } from "../redux/systemSlice";
-import {
-  FontAwesome,
-  AntDesign,
-  Feather,
-  Entypo,
-  SimpleLineIcons,
-} from "@expo/vector-icons";
+import { AntDesign, Feather, Entypo } from "@expo/vector-icons";
 import Modal from "./Modal";
 const Card = ({ data, setData, showEdit }) => {
   const dispatch = useDispatch();
@@ -63,6 +57,7 @@ const Shops = () => {
   const { loading, refresh, openModal } = useSelector((state) => state.system);
   const dispatch = useDispatch();
   const { token } = currentUser;
+  const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [query, setQuery] = useState("");
@@ -144,7 +139,7 @@ const Shops = () => {
         <TouchableOpacity
           className="absolute bottom-6 right-6"
           onPress={() => {
-            console.log("new");
+            navigation.navigate("NewShop");
           }}
         >
           <AntDesign name="pluscircle" size={52} color="#312e81" />

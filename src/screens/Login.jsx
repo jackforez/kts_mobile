@@ -159,6 +159,7 @@ const Login = () => {
                         <TextInput
                           className="w-full bg-white p-3 rounded-md border border-gray-200"
                           placeholder="Username"
+                          value={username}
                           onChangeText={(text) => {
                             setUsername(text.replace(/[^a-zA-Z0-9]/g, ""));
                           }}

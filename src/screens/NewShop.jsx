@@ -15,8 +15,9 @@ import { ktsRequest } from "../ultis/connections";
 import { useDispatch, useSelector } from "react-redux";
 import { onLoading, loaded } from "../redux/systemSlice";
 
-const Register = () => {
+const NewShop = () => {
   const { loading } = useSelector((state) => state.system);
+  const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
   const [cities, setCities] = useState([]);
@@ -25,6 +26,25 @@ const Register = () => {
   const [cityCode, setCityCode] = useState("");
   const [districtCode, setDistrictCode] = useState("");
   const [wardCode, setWardCode] = useState("");
+  const [cost, setCost] = useState([]);
+
+  useEffect(() => {
+    const fetchCost = async () => {
+      try {
+        const res = await ktsRequest.get("/cost", {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        });
+        setCost(res.data.data);
+      } catch (error) {
+        error.response
+          ? alert(error.response.data.message)
+          : alert("Network Error!");
+      }
+    };
+    fetchCost();
+  }, []);
   useEffect(() => {
     const getCities = async () => {
       try {
@@ -44,6 +64,8 @@ const Register = () => {
         const resd = await ktsRequest.get(`/cities/districts/${cName.code}`);
         const data = Object.values(resd.data);
         setDistricts(data);
+        data.findIndex((el) => el.name_with_type.includes(districtCode)) < 0 &&
+          setDistrictCode(data[0].name_with_type);
         setInputs((prev) => {
           return {
             ...prev,
@@ -65,6 +87,8 @@ const Register = () => {
         const resw = await ktsRequest.get(`cities/wards/${dName.code}`);
         const data = Object.values(resw.data);
         setWards(data);
+        data.findIndex((el) => el.name_with_type.includes(wardCode)) < 0 &&
+          setWardCode(data[0].name_with_type);
         setInputs((prev) => {
           return {
             ...prev,
@@ -146,7 +170,11 @@ const Register = () => {
       return;
     }
     try {
-      const res = await ktsRequest.post("/auth/signup", inputs);
+      const res = await ktsRequest.post("/auth/signup", {
+        ...inputs,
+        parentUser: currentUser?._id,
+        cost: [cost[0].costName],
+      });
       alert(res.data);
       dispatch(loaded());
     } catch (er) {
@@ -160,16 +188,12 @@ const Register = () => {
       className="flex-1 justify-between items-center w-full bg-white"
     >
       <SafeAreaView className="flex-1 w-full">
+        <Text className="p-2 mx-auto">Tạo mới Shop</Text>
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
         >
           <View className="w-full">
-            <ImageBackground
-              source={img1}
-              resizeMode="contain"
-              className="h-[200px] w-full"
-            />
             <View className="w-[90%] mx-auto">
               <View classNamew="w-3/4 bg-red-300 py-1 px-3 rounded-md">
                 <View className="items-center justify-center rounded-md space-y-4 w-full flex text-white mx-auto">
@@ -196,6 +220,7 @@ const Register = () => {
                     <TextInput
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="0123456789"
+                      keyboardType="numeric"
                       onChangeText={(text) => {
                         setInputs((prev) => {
                           return { ...prev, phone: text };
@@ -240,7 +265,7 @@ const Register = () => {
                         });
                       }}
                     />
-                    <Text className="text-indigo-900 text-start w-full font-semibold">
+                    {/* <Text className="text-indigo-900 text-start w-full font-semibold">
                       Email
                     </Text>
                     <TextInput
@@ -251,7 +276,7 @@ const Register = () => {
                           return { ...prev, email: text };
                         });
                       }}
-                    />
+                    /> */}
                     <Text className="text-indigo-900 text-start w-full font-semibold">
                       Địa chỉ
                     </Text>
@@ -301,7 +326,7 @@ const Register = () => {
                       onPress={handleCreate}
                       className="p-3.5 rounded-md bg-indigo-900 w-full justify-center items-center"
                     >
-                      <Text className="text-white  font-semibold">Đăng ký</Text>
+                      <Text className="text-white  font-semibold">Tạo mới</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -314,4 +339,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default NewShop;

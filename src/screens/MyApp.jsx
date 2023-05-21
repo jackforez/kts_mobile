@@ -8,6 +8,7 @@ import {
   Customers,
   Layout,
   Login,
+  NewShop,
   Profile,
   Register,
   Resetpwd,
@@ -30,6 +31,7 @@ const App = () => {
             <Stack.Screen name="Cost" component={Cost} />
             <Stack.Screen name="Shops" component={Shops} />
             <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="NewShop" component={NewShop} />
           </>
         ) : (
           <>
