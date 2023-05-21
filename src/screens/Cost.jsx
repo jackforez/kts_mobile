@@ -137,7 +137,6 @@ const Cost = () => {
       return;
     }
     if (parseInt(inputs.minWeight) >= parseInt(inputs.maxWeight)) {
-      console.log(inputs);
       alert("Giá trị không hợp lệ");
       dispatch(loaded());
       return;
