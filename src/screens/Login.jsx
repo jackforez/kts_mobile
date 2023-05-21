@@ -160,7 +160,7 @@ const Login = () => {
                           className="w-full bg-white p-3 rounded-md border border-gray-200"
                           placeholder="Username"
                           onChangeText={(text) => {
-                            setUsername(text);
+                            setUsername(text.replace(/[^a-zA-Z0-9]/g, ""));
                           }}
                         />
                         <View className="absolute right-2 top-2">

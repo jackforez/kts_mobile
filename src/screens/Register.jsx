@@ -12,8 +12,12 @@ import React, { useEffect, useState } from "react";
 import img1 from "../constant/logo.jpg";
 import MyPicker from "./MyPicker";
 import { ktsRequest } from "../ultis/connections";
+import { useDispatch, useSelector } from "react-redux";
+import { onLoading, loaded } from "../redux/systemSlice";
 
 const Register = () => {
+  const { loading } = useSelector((state) => state.system);
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -94,46 +98,59 @@ const Register = () => {
     wardCode && getWard();
   }, [wardCode]);
 
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
+  const handleCreate = async () => {
+    dispatch(onLoading());
+    if (!inputs.name) {
+      alert("Tên đăng nhập là bắt buộc!");
+      dispatch(loaded());
+      return;
+    }
+    if (!inputs.password) {
+      alert("Mật khẩu là bắt buộc!");
+      dispatch(loaded());
+      return;
+    }
+    if (inputs.password !== inputs.repassword) {
+      alert("Xác nhận mật khẩu không khớp!");
+      dispatch(loaded());
+      return;
+    }
     if (!inputs.phone || inputs.phone.length !== 10) {
       alert("Số điện thoại không hợp lệ");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     if (!inputs.displayName) {
       alert("Tên shop không được để trống!");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     if (!inputs.address) {
       alert("Vui lòng nhập địa chỉ, tên đường!");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     if (!inputs.cityCode) {
       alert("Vui lòng chọn Tỉnh/Thành!");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     if (!inputs.districtCode) {
       alert("Vui lòng chọn Quận/Huyện!");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     if (!inputs.wardCode) {
       alert("Vui lòng chọn Phường/Xã!");
-      setLoading(false);
+      dispatch(loaded());
       return;
     }
     try {
       const res = await ktsRequest.post("/auth/signup", inputs);
       alert(res.data);
-      setLoading(false);
+      dispatch(loaded());
     } catch (er) {
-      setLoading(false);
+      dispatch(loaded());
       alert(er.response ? er.response.data : "Network Error");
     }
   };
@@ -165,7 +182,10 @@ const Register = () => {
                       placeholder="Username"
                       onChangeText={(text) => {
                         setInputs((prev) => {
-                          return { ...prev, name: text };
+                          return {
+                            ...prev,
+                            name: text.replace(/[^a-zA-Z0-9]/g, ""),
+                          };
                         });
                       }}
                     />
@@ -277,7 +297,7 @@ const Register = () => {
                   <View className="w-full mt-6">
                     <TouchableOpacity
                       // onPress={() => navigation.navigate("Login")}
-                      onPress={() => alert("Chức năng đang được xây dựng")}
+                      onPress={handleCreate}
                       className="p-3.5 rounded-md bg-indigo-900 w-full justify-center items-center"
                     >
                       <Text className="text-white  font-semibold">Đăng ký</Text>

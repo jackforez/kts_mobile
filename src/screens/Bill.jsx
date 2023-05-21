@@ -12,7 +12,7 @@ import React, { useState, useEffect } from "react";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import { TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { search } from "../ultis/functions";
+import { search, toVND } from "../ultis/functions";
 import { data } from "../ultis/dummy";
 import { ktsRequest } from "../ultis/connections";
 import MyPicker from "./MyPicker";
@@ -41,6 +41,8 @@ const Bill = () => {
   const [cityCode, setCityCode] = useState("");
   const [districtCode, setDistrictCode] = useState("");
   const [wardCode, setWardCode] = useState("");
+  const [tmpCost, setTmpCost] = useState(0);
+
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
@@ -71,6 +73,29 @@ const Bill = () => {
     };
     checker.showSenderForm && fetchShop();
   }, [checker.showSenderForm]);
+  useEffect(() => {
+    const getCost = async () => {
+      try {
+        const res = await ktsRequest.post(
+          "/cost/calculate",
+          {
+            shopId: sender?._id,
+            weight: inputs.weight,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setTmpCost(res.data);
+      } catch (error) {
+        alert(error);
+      }
+    };
+    inputs.weight > 0 && getCost();
+  }, [inputs.weight, sender]);
+
   useEffect(() => {
     const getCities = async () => {
       try {
@@ -109,9 +134,7 @@ const Bill = () => {
             wardFullName: wName?.name_with_type,
           };
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     getFullAddress();
   }, [cityCode, districtCode, wardCode]);
@@ -258,11 +281,12 @@ const Bill = () => {
                           <View className="w-2/12">
                             <TouchableOpacity
                               className="border border-blue-500 rounded-md w p-2"
-                              onPress={() =>
+                              onPress={() => {
+                                setSender(el);
                                 setCheker((prev) => {
                                   return { ...prev, showSenderForm: false };
-                                })
-                              }
+                                });
+                              }}
                             >
                               <Text>Chọn</Text>
                             </TouchableOpacity>
@@ -297,21 +321,21 @@ const Bill = () => {
                 <View className="rounded-md space-y-1  truncate overflow-hidden">
                   <TextInput
                     className="w-full bg-gray-50 p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                    placeholder={currentUser?.displayName || "Tên người nhận"}
+                    placeholder={sender?.displayName || "Tên người nhận"}
                     editable={false}
-                    value={currentUser?.displayName}
+                    value={sender?.displayName}
                   />
                   <TextInput
                     className="w-full bg-gray-50 p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                    placeholder={currentUser?.phone || "Số điện thoại"}
+                    placeholder={sender?.phone || "Số điện thoại"}
                     editable={false}
-                    value={currentUser?.phone}
+                    value={sender?.phone}
                   />
                   <TextInput
-                    className="w-full bg-gray-50 p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                    placeholder={currentUser?.address || "Số nhà, tên đường"}
+                    className="w-full bg-gray-50 p-3 rounded-md border border-gray-200 focus:border-indigo-800 truncate"
+                    placeholder={sender?.address || "Số nhà, tên đường"}
                     editable={false}
-                    value={currentUser?.address}
+                    value={sender?.address}
                   />
                 </View>
               </View>
@@ -510,33 +534,33 @@ const Bill = () => {
                 </View>
                 <View className="w-1/2 pl-1 space-y-2">
                   <Text className="text-indigo-900 text-start w-full font-semibold">
-                    Số lượng
+                    COD (VNĐ)
                   </Text>
                   <TextInput
                     className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                    placeholder="1"
+                    placeholder="0"
                     keyboardType="numeric"
                     onChangeText={(text) => {
                       setInputs((prev) => {
-                        return { ...prev, itemQauntity: text };
+                        return { ...prev, cod: text };
                       });
                     }}
                   />
                 </View>
               </View>
+
               <Text className="text-indigo-900 pt-2 text-start w-full font-semibold">
-                Số tiền cần thu hộ (VND)
+                Tổng tiền thu hộ tạm tính (VNĐ)
               </Text>
-              <TextInput
-                className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                placeholder="0"
-                keyboardType="numeric"
-                onChangeText={(text) => {
-                  setInputs((prev) => {
-                    return { ...prev, cod: text };
-                  });
-                }}
-              />
+              <View className="w-full p-3 rounded-md border border-gray-200 bg-gray-50 font-bold focus:border-indigo-800">
+                <Text className="text-indigo-900 font-bold">
+                  {toVND(
+                    shopPay
+                      ? parseInt(inputs.cod)
+                      : parseInt(inputs.cod) + parseInt(tmpCost) || 0
+                  )}
+                </Text>
+              </View>
               <Text className="text-indigo-900 pt-2 text-start w-full font-semibold">
                 Ghi chú
               </Text>
