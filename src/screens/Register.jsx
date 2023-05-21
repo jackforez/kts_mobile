@@ -140,7 +140,7 @@ const Register = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 justify-between items-center w-full bg-white dark:bg-red-600"
+      className="flex-1 justify-between items-center w-full bg-white"
     >
       <SafeAreaView className="flex-1 w-full">
         <ScrollView
@@ -164,7 +164,9 @@ const Register = () => {
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="Username"
                       onChangeText={(text) => {
-                        setUsername(text);
+                        setInputs((prev) => {
+                          return { ...prev, name: text };
+                        });
                       }}
                     />
                     <Text className="text-indigo-900 text-start w-full font-semibold">
@@ -174,7 +176,9 @@ const Register = () => {
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="0123456789"
                       onChangeText={(text) => {
-                        setPassword(text);
+                        setInputs((prev) => {
+                          return { ...prev, phone: text };
+                        });
                       }}
                     />
                     <Text className="text-indigo-900 text-start w-full font-semibold">
@@ -184,7 +188,9 @@ const Register = () => {
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="Sẽ hiển thị khi tạo bill"
                       onChangeText={(text) => {
-                        setPassword(text);
+                        setInputs((prev) => {
+                          return { ...prev, displayName: text };
+                        });
                       }}
                     />
                     <Text className="text-indigo-900 text-start w-full font-semibold">
@@ -195,7 +201,9 @@ const Register = () => {
                       placeholder="password"
                       secureTextEntry={true}
                       onChangeText={(text) => {
-                        setPassword(text);
+                        setInputs((prev) => {
+                          return { ...prev, password: text };
+                        });
                       }}
                     />
                     <Text className="text-indigo-900 text-start w-full font-semibold">
@@ -203,10 +211,12 @@ const Register = () => {
                     </Text>
                     <TextInput
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
-                      placeholder="password"
+                      placeholder="xác nhận password"
                       secureTextEntry={true}
                       onChangeText={(text) => {
-                        setPassword(text);
+                        setInputs((prev) => {
+                          return { ...prev, repassword: text };
+                        });
                       }}
                     />
                     <Text className="text-indigo-900 text-start w-full font-semibold">
@@ -216,7 +226,9 @@ const Register = () => {
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="example@ktscorp.vn"
                       onChangeText={(text) => {
-                        setPassword(text);
+                        setInputs((prev) => {
+                          return { ...prev, email: text };
+                        });
                       }}
                     />
                     <Text className="text-indigo-900 text-start w-full font-semibold">
@@ -226,7 +238,9 @@ const Register = () => {
                       className="w-full bg-white p-3 rounded-md border border-gray-200"
                       placeholder="766 Nguyễn Văn Linh"
                       onChangeText={(text) => {
-                        setPassword(text);
+                        setInputs((prev) => {
+                          return { ...prev, address: text };
+                        });
                       }}
                     />
                     <View className="space-y-2">
