@@ -34,16 +34,6 @@ const Setting = () => {
         }}
       >
         <Text className="">Đăng xuất</Text>
-        <View className="space-y-2">
-          <MyPicker
-            placehoder={"Tỉnh/Thành"}
-            data={cities}
-            field={["name_with_type"]}
-            toShow="name_with_type"
-            size={"md"}
-            output={setCityCode}
-          />
-        </View>
       </TouchableOpacity>
     </SafeAreaView>
   );
