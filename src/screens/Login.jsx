@@ -19,6 +19,7 @@ import { onLoading, loaded } from "../redux/systemSlice";
 import { loginSuccess } from "../redux/userSlice";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 //navigation
 
 const Login = () => {
@@ -31,6 +32,7 @@ const Login = () => {
   const [orderDetails, setOrderDetails] = useState({});
   const [orderId, setOrderId] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
+  const [checker, setChecker] = useState({});
   const status = [
     {
       title: "thành công",
@@ -83,7 +85,9 @@ const Login = () => {
   const handleLogin = async () => {
     dispatch(onLoading());
     if (!username) {
-      alert("Tên đăng nhập không được để trống");
+      setChecker((prev) => {
+        return { ...prev, username: "Tên đăng nhập không được để trống" };
+      });
       dispatch(loaded());
       return;
     }
@@ -96,9 +100,11 @@ const Login = () => {
       dispatch(loginSuccess(res.data));
       return navigation.navigate("Layout");
     } catch (error) {
-      console.log(error);
       dispatch(loaded());
-      alert("Sai tên đăng nhập hoặc mật khẩu");
+      Toast.show({
+        type: "error",
+        text1: "Sai tên đăng nhập hoặc mật khẩu",
+      });
     }
   };
   return (
@@ -151,27 +157,50 @@ const Login = () => {
                 </View>
                 {loginTab ? (
                   <View className="items-center justify-center rounded-md space-y-4 mt-6 w-full flex text-white mx-auto">
-                    <View className="w-full space-y-2">
-                      <Text className="text-indigo-900 text-start w-full font-semibold">
-                        Tài khoản
-                      </Text>
+                    <View className="w-full space-y-4">
                       <View className="w-full relative">
+                        <View className="absolute z-10 bg-white -top-2 left-3 px-1">
+                          <Text
+                            className={`${
+                              checker.username
+                                ? "text-red-500"
+                                : "text-indigo-900"
+                            } text-xs`}
+                          >
+                            {checker.username || "Tài khoản"}
+                          </Text>
+                        </View>
                         <TextInput
-                          className="w-full bg-white p-3 rounded-md border border-gray-200"
+                          className={`w-full bg-white p-3 rounded-md border ${
+                            checker.username
+                              ? "border-red-500"
+                              : "border-gray-200"
+                          }`}
                           placeholder="Username"
                           value={username}
                           onChangeText={(text) => {
                             setUsername(text.replace(/[^a-zA-Z0-9]/g, ""));
                           }}
+                          onFocus={() =>
+                            setChecker((prev) => {
+                              return {
+                                ...prev,
+                                username: "",
+                              };
+                            })
+                          }
                         />
-                        <View className="absolute right-2 top-2">
-                          <AntDesign name="user" size={24} color="#6b7280" />
+                        <View className="absolute right-3 top-3">
+                          <AntDesign name="user" size={16} color="#6b7280" />
                         </View>
                       </View>
-                      <Text className="text-indigo-900 text-start w-full font-semibold">
-                        Mật khẩu
-                      </Text>
+
                       <View className="w-full relative">
+                        <View className="absolute z-10 bg-white -top-2 left-3 px-1">
+                          <Text className="text-indigo-900 text-xs">
+                            Mật khẩu
+                          </Text>
+                        </View>
                         <TextInput
                           className="w-full bg-white p-3 rounded-md border border-gray-200"
                           placeholder="password"
@@ -181,19 +210,19 @@ const Login = () => {
                           }}
                         />
                         <TouchableOpacity
-                          className="absolute right-2 top-2"
+                          className="absolute right-0 p-3"
                           onPress={() => setHidePassword(!hidePassword)}
                         >
                           {hidePassword ? (
                             <Ionicons
                               name="md-eye-off-outline"
-                              size={24}
+                              size={16}
                               color="#6b7280"
                             />
                           ) : (
                             <Ionicons
                               name="md-eye-outline"
-                              size={24}
+                              size={16}
                               color="#6b7280"
                             />
                           )}

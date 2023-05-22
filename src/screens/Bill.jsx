@@ -27,7 +27,7 @@ const Bill = () => {
   const [shopPay, setShopPay] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
   const [query, setQuery] = useState("");
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState({ cod: 0, weight: 1 });
   const [revievers, setRecievers] = useState([]);
   const [sender, setSender] = useState(currentUser || {});
   const [senders, setSenders] = useState([]);
@@ -89,8 +89,13 @@ const Bill = () => {
           }
         );
         setTmpCost(res.data);
+        setCheker((prev) => {
+          return { ...prev, cost: "" };
+        });
       } catch (error) {
-        alert(error);
+        setCheker((prev) => {
+          return { ...prev, cost: "Cân nặng chưa có cước " };
+        });
       }
     };
     inputs.weight > 0 && getCost();
@@ -518,13 +523,24 @@ const Bill = () => {
               />
               <View className="flex-row pt-2">
                 <View className="w-1/2 pr-1 space-y-2">
-                  <Text className="text-indigo-900 text-start w-full font-semibold">
-                    Trọng lượng
+                  <Text
+                    className={`${
+                      checker.cost ? "text-red-500" : "text-indigo-900"
+                    } text-start w-full font-semibold`}
+                  >
+                    {checker.cost || "Trọng lượng (gram)"}
                   </Text>
                   <TextInput
-                    className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
-                    placeholder="(gram)"
+                    className={`w-full bg-white p-3 rounded-md border ${
+                      checker.cost ? "border-red-500" : "border-gray-200"
+                    } focus:border-indigo-800`}
+                    placeholder={inputs.weight.toString()}
                     keyboardType="numeric"
+                    onFocus={() =>
+                      setCheker((prev) => {
+                        return { ...prev, cost: "" };
+                      })
+                    }
                     onChangeText={(text) => {
                       setInputs((prev) => {
                         return { ...prev, weight: text };
