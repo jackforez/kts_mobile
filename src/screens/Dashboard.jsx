@@ -176,7 +176,7 @@ const Dashboard = () => {
           )}
         </View>
         <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
-          Sản phẩm cung cấp bởi dichoho.top
+          Sản phẩm cung cấp bởi Dichoho.top
         </Text>
         <ScrollView
           className="py-2 w-full"
