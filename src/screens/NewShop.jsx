@@ -173,11 +173,13 @@ const NewShop = () => {
       const res = await ktsRequest.post("/auth/signup", {
         ...inputs,
         parentUser: currentUser?._id,
-        cost: [cost[0].costName],
+        cost: [cost[0]?.costName || "default-0-1000"],
       });
       alert(res.data);
       dispatch(loaded());
     } catch (er) {
+      console.log(er);
+
       dispatch(loaded());
       alert(er.response ? er.response.data : "Network Error");
     }
