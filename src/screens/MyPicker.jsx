@@ -49,7 +49,7 @@ const MyPicker = ({
       </TouchableOpacity>
 
       {openDataTable && (
-        <ScrollView className="rounded-md border border-gray-300 mt-1 max-h-72">
+        <ScrollView className="rounded-md border border-gray-300 mt-1 max-h-72 grow">
           <TextInput
             className={`w-full ${sz} focus:outline-none rounded px-2 bg-gray-50 ${
               !openDataTable && "hidden"

@@ -27,7 +27,7 @@ const Bill = () => {
   const [shopPay, setShopPay] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
   const [query, setQuery] = useState("");
-  const [inputs, setInputs] = useState({ cod: 0, weight: 1 });
+  const [inputs, setInputs] = useState({ weight: "1", cod: "0" });
   const [revievers, setRecievers] = useState([]);
   const [sender, setSender] = useState(currentUser || {});
   const [senders, setSenders] = useState([]);
@@ -80,7 +80,7 @@ const Bill = () => {
           "/cost/calculate",
           {
             shopId: sender?._id,
-            weight: inputs.weight,
+            weight: parseInt(inputs.weight || 1),
           },
           {
             headers: {
@@ -222,6 +222,16 @@ const Bill = () => {
       console.log(err);
       dispatch(loaded());
     }
+  };
+  const total = () => {
+    let t = 0;
+    const _cod = parseInt(inputs.cod) || 0;
+    if (shopPay) {
+      t = _cod;
+    } else {
+      t = _cod + parseInt(tmpCost);
+    }
+    return t;
   };
   return (
     <KeyboardAvoidingView
@@ -534,8 +544,8 @@ const Bill = () => {
                     className={`w-full bg-white p-3 rounded-md border ${
                       checker.cost ? "border-red-500" : "border-gray-200"
                     } focus:border-indigo-800`}
-                    placeholder={inputs.weight.toString()}
-                    keyboardType="numeric"
+                    placeholder={inputs.weight || "1"}
+                    value={inputs.weight}
                     onFocus={() =>
                       setCheker((prev) => {
                         return { ...prev, cost: "" };
@@ -543,7 +553,7 @@ const Bill = () => {
                     }
                     onChangeText={(text) => {
                       setInputs((prev) => {
-                        return { ...prev, weight: text };
+                        return { ...prev, weight: text.replace(/[^0-9]/g, "") };
                       });
                     }}
                   />
@@ -555,10 +565,11 @@ const Bill = () => {
                   <TextInput
                     className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
                     placeholder="0"
-                    keyboardType="numeric"
+                    // keyboardType="numeric"
+                    value={inputs.cod}
                     onChangeText={(text) => {
                       setInputs((prev) => {
-                        return { ...prev, cod: text };
+                        return { ...prev, cod: text.replace(/[^0-9]/g, "") };
                       });
                     }}
                   />
@@ -570,10 +581,11 @@ const Bill = () => {
               </Text>
               <View className="w-full p-3 rounded-md border border-gray-200 bg-gray-50 font-bold focus:border-indigo-800">
                 <Text className="text-indigo-900 font-bold">
+                  {/* {toVND(total())} */}
                   {toVND(
                     shopPay
-                      ? parseInt(inputs.cod)
-                      : parseInt(inputs.cod) + parseInt(tmpCost) || 0
+                      ? parseInt(inputs.cod) || 0
+                      : (parseInt(inputs.cod) || 0) + parseInt(tmpCost)
                   )}
                 </Text>
               </View>

@@ -113,7 +113,7 @@ const Dashboard = () => {
                 <Image
                   key={i}
                   source={{ uri: img }}
-                  className="w-full h-48 object-cover rounded-md overflow-hidden"
+                  className="w-full h-48 object-cover rounded-md"
                 />
               </View>
             );
@@ -176,7 +176,7 @@ const Dashboard = () => {
           )}
         </View>
         <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
-          dichoho.top
+          Sản phẩm cung cấp bởi dichoho.top
         </Text>
         <ScrollView
           className="py-2 w-full"

@@ -19,7 +19,6 @@ import { onLoading, loaded } from "../redux/systemSlice";
 import { loginSuccess } from "../redux/userSlice";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 //navigation
 
 const Login = () => {
@@ -101,10 +100,7 @@ const Login = () => {
       return navigation.navigate("Layout");
     } catch (error) {
       dispatch(loaded());
-      Toast.show({
-        type: "error",
-        text1: "Sai tên đăng nhập hoặc mật khẩu",
-      });
+      alert("Sai tên đăng nhập hoặc mật khẩu");
     }
   };
   return (

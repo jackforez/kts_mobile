@@ -14,7 +14,6 @@ import {
   Resetpwd,
   Shops,
 } from ".";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 const Stack = createNativeStackNavigator();
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -42,7 +41,6 @@ const App = () => {
           </>
         )}
       </Stack.Navigator>
-      <Toast />
     </NavigationContainer>
   );
 };
