@@ -18,7 +18,7 @@ const MyPicker = ({
   output,
   disabled = false,
   required = "",
-  nested = false,
+  nested = true,
 }) => {
   const [query, setQuery] = useState("");
   const [openDataTable, setOpenDataTable] = useState(false);
