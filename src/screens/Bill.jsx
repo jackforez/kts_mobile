@@ -492,6 +492,7 @@ const Bill = () => {
                       toShow="name_with_type"
                       size={"md"}
                       output={setCityCode}
+                      nested={true}
                     />
                   </View>
                   <View className="space-y-2">
@@ -502,6 +503,8 @@ const Bill = () => {
                       toShow="name_with_type"
                       size={"md"}
                       output={setDistrictCode}
+                      required="Chọn Tỉnh/Thành trước"
+                      nested={true}
                     />
                   </View>
                   <View className="space-y-2">
@@ -512,6 +515,8 @@ const Bill = () => {
                       toShow="name_with_type"
                       size={"md"}
                       output={setWardCode}
+                      nested={true}
+                      required="Chọn Quận/Huyện trước"
                     />
                   </View>
                 </View>

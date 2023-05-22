@@ -18,6 +18,7 @@ const MyPicker = ({
   output,
   disabled = false,
   required = "",
+  nested = false,
 }) => {
   const [query, setQuery] = useState("");
   const [openDataTable, setOpenDataTable] = useState(false);
@@ -49,7 +50,7 @@ const MyPicker = ({
       </TouchableOpacity>
 
       {openDataTable && (
-        <ScrollView className="rounded-md border border-gray-300 mt-1 max-h-72 grow">
+        <View className="max-h-72 rounded-md border border-gray-300 mt-1">
           <TextInput
             className={`w-full ${sz} focus:outline-none rounded px-2 bg-gray-50 ${
               !openDataTable && "hidden"
@@ -59,33 +60,35 @@ const MyPicker = ({
               setQuery(text);
             }}
           />
-          {search(data, query, field).length > 0 ? (
-            search(data, query, field).map((el, i) => {
-              return (
-                <TouchableOpacity
-                  key={i}
-                  onPress={() => {
-                    setSelected(el[toShow]);
-                    output(el[toShow]);
-                    setOpenDataTable(false);
-                  }}
-                >
-                  <Text
-                    className={`hover:bg-green-500 truncate px-2 ${sz} ${
-                      el[toShow] === selected ? "bg-green-500" : ""
-                    }`}
+          <ScrollView className=" " nestedScrollEnabled={nested}>
+            {search(data, query, field).length > 0 ? (
+              search(data, query, field).map((el, i) => {
+                return (
+                  <TouchableOpacity
+                    key={i}
+                    onPress={() => {
+                      setSelected(el[toShow]);
+                      output(el[toShow]);
+                      setOpenDataTable(false);
+                    }}
                   >
-                    {el[toShow]}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })
-          ) : (
-            <View className="p-2">
-              <Text>{required || "Không có dữ liệu phù hợp"}</Text>
-            </View>
-          )}
-        </ScrollView>
+                    <Text
+                      className={`hover:bg-green-500 truncate px-2 ${sz} ${
+                        el[toShow] === selected ? "bg-green-500" : ""
+                      }`}
+                    >
+                      {el[toShow]}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })
+            ) : (
+              <View className="p-2">
+                <Text>{required || "Không có dữ liệu phù hợp"}</Text>
+              </View>
+            )}
+          </ScrollView>
+        </View>
       )}
     </View>
   );
