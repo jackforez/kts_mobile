@@ -219,7 +219,7 @@ const Bill = () => {
       setInputs({});
       dispatch(loaded());
     } catch (err) {
-      console.log(err);
+      alert(err.response.data.message);
       dispatch(loaded());
     }
   };
