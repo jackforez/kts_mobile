@@ -16,11 +16,19 @@ import { search, toVND } from "../ultis/functions";
 import { data } from "../ultis/dummy";
 import { ktsRequest } from "../ultis/connections";
 import MyPicker from "./MyPicker";
+import LottieView from "lottie-react-native";
+
 import { useDispatch, useSelector } from "react-redux";
-import { loaded, onLoading } from "../redux/systemSlice";
+import {
+  loaded,
+  onCloseModal,
+  onLoading,
+  onOpenModal,
+} from "../redux/systemSlice";
+import { Modal, MyButton } from "../components";
 const Bill = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const { loading } = useSelector((state) => state.system);
+  const { loading, openModal } = useSelector((state) => state.system);
   const dispatch = useDispatch();
   const { token } = currentUser;
   const navigation = useNavigation();
@@ -42,7 +50,7 @@ const Bill = () => {
   const [districtCode, setDistrictCode] = useState("");
   const [wardCode, setWardCode] = useState("");
   const [tmpCost, setTmpCost] = useState(0);
-
+  const [res, setRes] = useState({});
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
@@ -146,33 +154,39 @@ const Bill = () => {
   const handleClick = async () => {
     dispatch(onLoading());
     if (!inputs.phone || inputs.phone.length != 10) {
-      alert("Số điện thoại người nhận hàng không hợp lệ");
+      setRes({ type: "warning", message: "Số điện thoại không hợp lệ" });
+      dispatch(onOpenModal());
       dispatch(loaded());
       return;
     }
     if (!inputs.name) {
-      alert("Chưa nhập tên người nhận hàng");
+      setRes({ type: "warning", message: "Tên người nhận không hợp lệ" });
+      dispatch(onOpenModal());
       dispatch(loaded());
       return;
     }
 
     if (!inputs.address) {
-      alert("Chưa nhập địa chỉ người nhận hàng");
+      setRes({ type: "warning", message: "Địa chỉ không hợp lệ" });
+      dispatch(onOpenModal());
       dispatch(loaded());
       return;
     }
     if (!inputs.weight || inputs.weight <= 0) {
-      alert("Trọng lượng không hợp lệ");
+      setRes({ type: "warning", message: "Trọng lượng không hợp lệ" });
+      dispatch(onOpenModal());
       dispatch(loaded());
       return;
     }
     if (!inputs.itemName) {
-      alert("Cần nhập nội dung hàng hóa");
+      setRes({ type: "warning", message: "Nội dung hàng hóa không hợp lệ" });
+      dispatch(onOpenModal());
       dispatch(loaded());
       return;
     }
     if (inputs.itemQauntity < 1) {
-      alert("Số lượng không hợp lệ!");
+      setRes({ type: "warning", message: "Số lượng không hợp lệ" });
+      dispatch(onOpenModal());
       dispatch(loaded());
     }
     try {
@@ -215,12 +229,15 @@ const Bill = () => {
           },
         }
       );
-      alert(res.data);
-      setInputs({});
+      setRes({ type: "success", message: res.data });
+      dispatch(onOpenModal());
+      setInputs({ ...{}, weight: "1", cod: "0" });
       dispatch(loaded());
     } catch (err) {
-      alert(err.response.data.message);
+      // alert(err.response.data.message);
       dispatch(loaded());
+      setRes({ type: "danger", message: err.response.data.message });
+      dispatch(onOpenModal());
     }
   };
   const total = () => {
@@ -527,6 +544,7 @@ const Bill = () => {
               <TextInput
                 className="w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
                 placeholder="Nội dung hàng hóa"
+                value={inputs.itemName}
                 onChangeText={(text) => {
                   setInputs((prev) => {
                     return { ...prev, itemName: text };
@@ -598,6 +616,7 @@ const Bill = () => {
                 className="max-w-full bg-white p-3 rounded-md border border-gray-200 focus:border-indigo-800"
                 placeholder="Ghi chú của shop"
                 multiline={true}
+                value={inputs?.note}
                 onChangeText={(text) => {
                   setInputs((prev) => {
                     return { ...prev, note: text };
@@ -654,6 +673,67 @@ const Bill = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
+      {openModal && (
+        <Modal>
+          {res.type === "success" ? (
+            <View className="bg-white px-3 rounded-xl w-full">
+              <LottieView
+                source={require("../../assets/success.json")}
+                className="h-32 w-32 mx-auto"
+                autoPlay={true}
+                loop={false}
+              />
+              <Text className="font-bold pt-3 pb-6 mx-auto text-xl">
+                {res.message.split(" ")[7]}
+              </Text>
+              <MyButton
+                variant={res.type}
+                size={"md"}
+                textStyle="uppercase font-bold"
+                callback={() => dispatch(onCloseModal())}
+              >
+                Tạo đơn mới
+              </MyButton>
+            </View>
+          ) : res.type === "danger" ? (
+            <View className="bg-white p-3 rounded-xl w-full">
+              <LottieView
+                source={require("../../assets/error.json")}
+                className="h-32 w-32 mx-auto"
+                autoPlay={true}
+                loop={false}
+              />
+              <Text className="font-bold pt-3 pb-6 mx-auto">{res.message}</Text>
+              <MyButton
+                variant={res.type}
+                size={"md"}
+                textStyle="uppercase font-bold"
+                callback={() => dispatch(onCloseModal())}
+              >
+                Đóng
+              </MyButton>
+            </View>
+          ) : (
+            <View className="bg-white p-3 rounded-xl w-full">
+              <LottieView
+                source={require("../../assets/warn.json")}
+                className="h-32 w-32 mx-auto"
+                autoPlay={true}
+                loop={false}
+              />
+              <Text className="font-bold pt-3 pb-6 mx-auto">{res.message}</Text>
+              <MyButton
+                variant={res.type}
+                size={"md"}
+                textStyle="uppercase font-bold"
+                callback={() => dispatch(onCloseModal())}
+              >
+                Kiểm tra lại
+              </MyButton>
+            </View>
+          )}
+        </Modal>
+      )}
     </KeyboardAvoidingView>
   );
 };

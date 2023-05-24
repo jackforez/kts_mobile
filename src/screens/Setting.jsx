@@ -4,13 +4,13 @@ import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/userSlice";
-import MyPicker from "./MyPicker";
 import { ktsRequest } from "../ultis/connections";
-
+import { Modal, MyButton } from "../components";
+import LottieView from "lottie-react-native";
 const Setting = () => {
   const [cities, setCities] = useState([]);
   const [cityCode, setCityCode] = useState("");
-
+  const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
     const getCities = async () => {
       try {
