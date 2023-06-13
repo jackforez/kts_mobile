@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   RefreshControl,
+  StyleSheet,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { TextInput } from "react-native";
@@ -16,7 +17,10 @@ import { ktsRequest } from "../ultis/connections";
 import { useDispatch, useSelector } from "react-redux";
 import { loaded, onLoading } from "../redux/systemSlice";
 import { Feather } from "@expo/vector-icons";
-const Card = ({ data }) => {
+import { Modal } from "react-native";
+import { Pressable } from "react-native";
+import { Alert } from "react-native";
+const Card = ({ data, openDetails }) => {
   const navigation = useNavigation();
   const STATUS = [
     {
@@ -52,10 +56,7 @@ const Card = ({ data }) => {
     );
   };
   return (
-    <TouchableOpacity
-      className="mt-2.5 shadow"
-      onPress={() => navigation.navigate("Details")}
-    >
+    <TouchableOpacity className="mt-2.5" onPress={openDetails}>
       <View className="rounded-2xl overflow-hidden bg-white w-full">
         <View
           className={`${
@@ -113,7 +114,8 @@ const Bills = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [bills, setBills] = useState([]);
   const [query, setQuery] = useState("");
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [details, setDetails] = useState({});
   useEffect(() => {
     dispatch(onLoading());
     const fetch = async () => {
@@ -152,6 +154,57 @@ const Bills = () => {
     >
       <SafeAreaView className="flex-1 items-center bg-slate-200 w-full px-4 justify-between">
         {/* header */}
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <View className="flex-1 bg-black/30">
+            <View className="w-full h-5/6 bg-white bottom-0 absolute rounded-t-3xl justify-between items-center pb-6 pt-3 overflow-hidden">
+              <View className="h-[92%] px-3 rounded-md overflow-hidden">
+                <View>
+                  {details?.tracking && (
+                    <View className="max-h-full">
+                      <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                      >
+                        {details.tracking.map((t, i) => {
+                          return (
+                            <View
+                              key={i}
+                              className="rounded-md border-l-4 border-l-orange-500 mt-2 p-2 bg-indigo-50 w-full"
+                            >
+                              <Text className="font-semibold">
+                                {t.description}
+                              </Text>
+                              <Text className="text-xs">
+                                {new Date(t.time).toLocaleString()}
+                              </Text>
+                              <Text>{t.position}</Text>
+                            </View>
+                          );
+                        })}
+                      </ScrollView>
+                    </View>
+                  )}
+                </View>
+              </View>
+              <View className="h-[8%] justify-center px-4 w-full">
+                <Pressable
+                  className="p-3 bg-[#2196F3] w-full rounded-xl"
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text className="text-white font-semibold mx-auto">Đóng</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
         <Text className="p-2 mx-auto">Danh sách đơn hàng</Text>
         <View className="relative pb-2 w-full px-2">
           <TextInput
@@ -180,7 +233,16 @@ const Bills = () => {
               0 ? (
                 search(bills, query, ["toPhone", "toName", "status"]).map(
                   (b, i) => {
-                    return <Card key={i} data={b} />;
+                    return (
+                      <Card
+                        key={i}
+                        data={b}
+                        openDetails={() => {
+                          setModalVisible(true);
+                          setDetails(b);
+                        }}
+                      />
+                    );
                   }
                 )
               ) : (
@@ -202,5 +264,4 @@ const Bills = () => {
     </KeyboardAvoidingView>
   );
 };
-
 export default Bills;
