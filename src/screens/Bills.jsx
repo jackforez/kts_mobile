@@ -53,10 +53,10 @@ const Card = ({ data }) => {
   };
   return (
     <TouchableOpacity
-      className="mt-4"
+      className="mt-2.5 shadow"
       onPress={() => navigation.navigate("Details")}
     >
-      <View className="rounded-xl overflow-hidden bg-white w-full">
+      <View className="rounded-2xl overflow-hidden bg-white w-full">
         <View
           className={`${
             getStatus(data.status).bgColor
@@ -99,77 +99,6 @@ const Card = ({ data }) => {
               {toVND(data.shopAmount)}
             </Text>
           </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-const Card1 = ({ data }) => {
-  const STATUS = [
-    {
-      id: 0,
-      bgColor: "text-blue-500",
-      name: "Đơn mới",
-    },
-    {
-      id: 1,
-      bgColor: "text-yellow-400",
-      name: "Đang giao",
-    },
-    {
-      id: 2,
-      bgColor: "text-green-500",
-      name: "Giao xong",
-    },
-    {
-      id: 3,
-      bgColor: "text-red-500",
-      name: "Đã hủy",
-    },
-  ];
-  const getStatus = (_status) => {
-    return (
-      STATUS.find((item) =>
-        item.name.toLocaleLowerCase().includes(_status.toLocaleLowerCase())
-      ) || STATUS[0]
-    );
-  };
-  return (
-    <TouchableOpacity
-      className={`
-      bg-white w-full h-36 mt-4 rounded-3xl overflow-hidden`}
-    >
-      <View className="flex-row h-full">
-        <View className="w-1/3 h-full justify-between items-center p-4">
-          <Text className="text-gray-800">
-            {new Date(data.createdAt).toLocaleDateString()}
-          </Text>
-          <View>
-            <Text className="font-semibold text-base text-indigo-900 w-full">
-              {toVND(data.shopAmount)}
-            </Text>
-          </View>
-          <Text className={`${getStatus(data.status).bgColor} font-semibold`}>
-            {data.status}
-          </Text>
-        </View>
-        <View className="w-2/3 h-full space-y-2 items-start p-4">
-          <Text className="font-semibold">
-            {data.orderNumber + " - " + data.partnerTrackingId}
-          </Text>
-          <Text className="font-semibold">
-            {data.toName + " - " + data.toPhone}
-          </Text>
-
-          <Text className="">
-            {data.toAddress +
-              ", " +
-              data.toWard +
-              ", " +
-              data.toDistrict +
-              ", " +
-              data.toCity}
-          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -226,13 +155,13 @@ const Bills = () => {
         <Text className="p-2 mx-auto">Danh sách đơn hàng</Text>
         <View className="relative pb-2 w-full px-2">
           <TextInput
-            className="px-2 py-3 bg-white border border-gray-200 rounded-md"
+            className="px-4 py-3 bg-white border border-gray-200 rounded-2xl"
             placeholder="mã vận đơn, tên người nhận, số điện thoại..."
             onChangeText={(text) => {
               setQuery(text);
             }}
           />
-          <View className="absolute top-2 right-4">
+          <View className="absolute top-2 right-5">
             <Feather name="search" size={24} color="rgb(156 163 175)" />
           </View>
         </View>
