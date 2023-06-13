@@ -17,25 +17,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { loaded, onLoading } from "../redux/systemSlice";
 import { Feather } from "@expo/vector-icons";
 const Card = ({ data }) => {
+  const navigation = useNavigation();
   const STATUS = [
     {
       id: 0,
       bgColor: "bg-blue-500",
+      textColor: "text-blue-500",
       name: "Đơn mới",
     },
     {
       id: 1,
       bgColor: "bg-yellow-400",
+      textColor: "text-yellow-400",
       name: "Đang giao",
     },
     {
       id: 2,
       bgColor: "bg-green-500",
+      textColor: "text-green-500",
       name: "Giao xong",
     },
     {
       id: 3,
       bgColor: "bg-red-500",
+      textColor: "text-red-500",
       name: "Đã hủy",
     },
   ];
@@ -47,23 +52,36 @@ const Card = ({ data }) => {
     );
   };
   return (
-    <TouchableOpacity>
-      <View className="rounded-md bg-white mt-1">
+    <TouchableOpacity
+      className="mt-4"
+      onPress={() => navigation.navigate("Details")}
+    >
+      <View className="rounded-xl overflow-hidden bg-white w-full">
         <View
           className={`${
             getStatus(data.status).bgColor
-          } justify-between flex-row p-2  rounded-t-md`}
+          } justify-between flex-row p-3  rounded-t-md`}
         >
-          <Text className="text-white font-semibold">{data.orderNumber}</Text>
+          <View className="flex-row">
+            <Text className="text-white font-semibold px-1">
+              {data.orderNumber}
+            </Text>
+            <Text className="text-white font-semibold px-1">
+              {data.partnerTrackingId}
+            </Text>
+          </View>
+
           <Text className="text-white">
             {new Date(data.createdAt).toLocaleDateString()}
           </Text>
         </View>
-        <View className="p-2 flex-row border-b border-x rounded-b-md border-gray-200">
-          <View className="w-2/3">
-            <Text className="font-semibold">{data.toName}</Text>
-            <Text className="text-xs">{data.toPhone}</Text>
-            <Text className="text-xs">
+        <View className="p-3 flex-row">
+          <View className="w-2/3 justify-between space-y-2">
+            <Text className="font-semibold capitalize">
+              {data.toName + " - " + data.toPhone}
+            </Text>
+
+            <Text className="">
               {data.toAddress +
                 ", " +
                 data.toWard +
@@ -72,12 +90,86 @@ const Card = ({ data }) => {
                 ", " +
                 data.toCity}
             </Text>
+            <Text className={`${getStatus(data.status).textColor}`}>
+              {data.status}
+            </Text>
           </View>
-          <View className="items-center flex-row w-1/3 justify-end">
+          <View className="items-end w-1/3 justify-center">
             <Text className="font-semibold text-base text-indigo-900">
               {toVND(data.shopAmount)}
             </Text>
           </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+const Card1 = ({ data }) => {
+  const STATUS = [
+    {
+      id: 0,
+      bgColor: "text-blue-500",
+      name: "Đơn mới",
+    },
+    {
+      id: 1,
+      bgColor: "text-yellow-400",
+      name: "Đang giao",
+    },
+    {
+      id: 2,
+      bgColor: "text-green-500",
+      name: "Giao xong",
+    },
+    {
+      id: 3,
+      bgColor: "text-red-500",
+      name: "Đã hủy",
+    },
+  ];
+  const getStatus = (_status) => {
+    return (
+      STATUS.find((item) =>
+        item.name.toLocaleLowerCase().includes(_status.toLocaleLowerCase())
+      ) || STATUS[0]
+    );
+  };
+  return (
+    <TouchableOpacity
+      className={`
+      bg-white w-full h-36 mt-4 rounded-3xl overflow-hidden`}
+    >
+      <View className="flex-row h-full">
+        <View className="w-1/3 h-full justify-between items-center p-4">
+          <Text className="text-gray-800">
+            {new Date(data.createdAt).toLocaleDateString()}
+          </Text>
+          <View>
+            <Text className="font-semibold text-base text-indigo-900 w-full">
+              {toVND(data.shopAmount)}
+            </Text>
+          </View>
+          <Text className={`${getStatus(data.status).bgColor} font-semibold`}>
+            {data.status}
+          </Text>
+        </View>
+        <View className="w-2/3 h-full space-y-2 items-start p-4">
+          <Text className="font-semibold">
+            {data.orderNumber + " - " + data.partnerTrackingId}
+          </Text>
+          <Text className="font-semibold">
+            {data.toName + " - " + data.toPhone}
+          </Text>
+
+          <Text className="">
+            {data.toAddress +
+              ", " +
+              data.toWard +
+              ", " +
+              data.toDistrict +
+              ", " +
+              data.toCity}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -127,9 +219,9 @@ const Bills = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 justify-between items-center w-full bg-white"
+      className="flex-1 justify-between items-center w-full"
     >
-      <SafeAreaView className="flex-1 items-center bg-gray-50 w-full justify-between">
+      <SafeAreaView className="flex-1 items-center bg-slate-200 w-full px-4 justify-between">
         {/* header */}
         <Text className="p-2 mx-auto">Danh sách đơn hàng</Text>
         <View className="relative pb-2 w-full px-2">

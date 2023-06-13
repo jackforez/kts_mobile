@@ -6,6 +6,7 @@ import {
   Bills,
   Cost,
   Customers,
+  Details,
   Layout,
   Login,
   NewShop,
@@ -32,6 +33,7 @@ const App = () => {
             <Stack.Screen name="Shops" component={Shops} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="NewShop" component={NewShop} />
+            <Stack.Screen name="Details" component={Details} />
           </>
         ) : (
           <>

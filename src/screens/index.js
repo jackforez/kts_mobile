@@ -12,3 +12,4 @@ export { default as Shops } from "./Shops";
 export { default as Dashboard } from "./Dashboard";
 export { default as Resetpwd } from "./Resetpwd";
 export { default as NewShop } from "./NewShop";
+export { default as Details } from "./Details";
