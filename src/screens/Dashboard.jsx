@@ -72,7 +72,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
   return (
-    <SafeAreaView className="flex-1 items-center bg-white justify-between">
+    <SafeAreaView className="flex-1 items-center bg-slate-50 justify-between">
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
