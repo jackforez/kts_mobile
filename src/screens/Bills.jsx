@@ -20,41 +20,42 @@ import { Feather } from "@expo/vector-icons";
 import { Modal } from "react-native";
 import { Pressable } from "react-native";
 import { Alert } from "react-native";
+const STATUS = [
+  {
+    id: 0,
+    bgColor: "bg-blue-500",
+    textColor: "text-blue-500",
+    name: "Đơn mới",
+  },
+  {
+    id: 1,
+    bgColor: "bg-yellow-400",
+    textColor: "text-yellow-400",
+    name: "Đang giao",
+  },
+  {
+    id: 2,
+    bgColor: "bg-green-500",
+    textColor: "text-green-500",
+    name: "Giao xong",
+  },
+  {
+    id: 3,
+    bgColor: "bg-red-500",
+    textColor: "text-red-500",
+    name: "Đã hủy",
+  },
+];
+const getStatus = (_status) => {
+  return (
+    STATUS.find((item) =>
+      item.name.toLocaleLowerCase().includes(_status.toLocaleLowerCase())
+    ) || STATUS[0]
+  );
+};
 const Card = ({ data, openDetails }) => {
   const navigation = useNavigation();
-  const STATUS = [
-    {
-      id: 0,
-      bgColor: "bg-blue-500",
-      textColor: "text-blue-500",
-      name: "Đơn mới",
-    },
-    {
-      id: 1,
-      bgColor: "bg-yellow-400",
-      textColor: "text-yellow-400",
-      name: "Đang giao",
-    },
-    {
-      id: 2,
-      bgColor: "bg-green-500",
-      textColor: "text-green-500",
-      name: "Giao xong",
-    },
-    {
-      id: 3,
-      bgColor: "bg-red-500",
-      textColor: "text-red-500",
-      name: "Đã hủy",
-    },
-  ];
-  const getStatus = (_status) => {
-    return (
-      STATUS.find((item) =>
-        item.name.toLocaleLowerCase().includes(_status.toLocaleLowerCase())
-      ) || STATUS[0]
-    );
-  };
+
   return (
     <TouchableOpacity className="mt-2.5" onPress={openDetails}>
       <View className="rounded-2xl overflow-hidden bg-white w-full">
@@ -175,9 +176,21 @@ const Bills = () => {
                       >
                         {details.tracking.map((t, i) => {
                           return (
+                            // <View
+                            //   key={i}
+                            //   className="rounded-md border-l-4 border-l-orange-500 mt-2 p-2 bg-indigo-50 w-full"
+                            // >
+                            //   <Text className="font-semibold">
+                            //     {t.description}
+                            //   </Text>
+                            //   <Text className="text-xs">
+                            //     {new Date(t.time).toLocaleString()}
+                            //   </Text>
+                            //   <Text>{t.position}</Text>
+                            // </View>
                             <View
                               key={i}
-                              className="rounded-md border-l-4 border-l-orange-500 mt-2 p-2 bg-indigo-50 w-full"
+                              className=" pl-10 py-2 w-full relative"
                             >
                               <Text className="font-semibold">
                                 {t.description}
@@ -186,6 +199,18 @@ const Bills = () => {
                                 {new Date(t.time).toLocaleString()}
                               </Text>
                               <Text>{t.position}</Text>
+
+                              <View className="h-6 w-6 bg-white rounded-full absolute top-1/2 items-center justify-center">
+                                <View
+                                  className={`h-4 w-4 ${
+                                    getStatus(t.status).bgColor
+                                  } rounded-full`}
+                                ></View>
+                              </View>
+
+                              {i < details.tracking.length - 1 && (
+                                <View className="h-full border border-ktsPrimary/50 absolute top-[85%] left-2.5"></View>
+                              )}
                             </View>
                           );
                         })}
