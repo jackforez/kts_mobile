@@ -221,7 +221,11 @@ const Bills = () => {
               </View>
               <View className="h-[8%] justify-center px-4 w-full">
                 <Pressable
-                  className="p-3 bg-[#2196F3] w-full rounded-xl"
+                  className={`p-3 ${
+                    details.status
+                      ? getStatus(details.status).bgColor
+                      : getStatus("Đơn mới").bgColor
+                  } w-full rounded-xl`}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
                   <Text className="text-white font-semibold mx-auto">Đóng</Text>
