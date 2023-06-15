@@ -33,7 +33,7 @@ import { Header } from "../components";
 const Card = ({ data, setData, showEdit }) => {
   const dispatch = useDispatch();
   return (
-    <View className="rounded-md bg-white mt-1 border border-gray-200">
+    <View className="rounded-2xl bg-white mt-2">
       <View className={`justify-between flex-row p-2  rounded-t-md`}>
         <Text className="text-indigo-900 font-semibold my-auto mx-[20%]">
           {data.name}
@@ -239,7 +239,7 @@ const Customers = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 justify-between items-center w-full bg-white"
+      className="flex-1 justify-between items-center w-full bg-red-500"
     >
       {openModal && (
         <Modal>
@@ -269,12 +269,12 @@ const Customers = () => {
           </View>
         </Modal>
       )}
-      <SafeAreaView className="flex-1 items-center bg-gray-50 w-full justify-between relative">
+      <SafeAreaView className="flex-1 items-center bg-slate-200 w-full justify-between relative">
         {/* header */}
         <Header title={"danh bạ khách hàng"} fallBack={"Home"} />
         <View className="relative pb-2 w-full px-2">
           <TextInput
-            className="px-2 py-3 bg-white border border-gray-200 rounded-md"
+            className="px-2 py-3 bg-white rounded-3xl"
             placeholder="tên người nhận, số điện thoại..."
             onChangeText={(text) => {
               setQuery(text);

@@ -238,7 +238,7 @@ const Bills = () => {
         <Header title={"danh sách đơn hàng"} fallBack={"Home"} />
         <View className="relative pb-2 w-full px-2">
           <TextInput
-            className="px-4 py-3 bg-white border border-gray-200 rounded-2xl"
+            className="px-4 py-3 bg-white border border-gray-200 rounded-3xl"
             placeholder="mã vận đơn, tên người nhận, số điện thoại..."
             onChangeText={(text) => {
               setQuery(text);
