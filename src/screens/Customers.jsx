@@ -32,42 +32,44 @@ import Modal from "./Modal";
 import { Header } from "../components";
 const Card = ({ data, setData, showEdit }) => {
   const dispatch = useDispatch();
+  const [showButtons, setShowbuttons] = useState(false);
   return (
-    <View className="rounded-2xl bg-white mt-2">
-      <View className={`justify-between flex-row p-2  rounded-t-md`}>
-        <Text className="text-indigo-900 font-semibold my-auto mx-[20%]">
-          {data.name}
-        </Text>
-        <View className="flex-row gap-4 p-1">
-          <TouchableOpacity
-            onPress={() => {
-              showEdit(true);
-              setData(data);
-            }}
-          >
-            <SimpleLineIcons name="pencil" size={18} color="orange" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              dispatch(onOpenModal());
-              setData(data);
-            }}
-          >
-            <FontAwesome name="trash-o" size={20} color="red" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View className="flex-row">
-        <View className="w-1/5 items-center">
-          <View className="h-12 w-12 bg-orange-500 rounded-full justify-center items-center">
+    <TouchableOpacity
+      className="rounded-2xl bg-white mt-2"
+      onPress={() => setShowbuttons(!showButtons)}
+    >
+      <View className="flex-row p-3 relative">
+        {showButtons && (
+          <View className="flex-row p-2 absolute right-0 rounded-tr-xl rounded-bl-xl z-10 space-x-3 top-0 bg-orange-100">
+            <TouchableOpacity
+              onPress={() => {
+                showEdit(true);
+                setData(data);
+              }}
+            >
+              <SimpleLineIcons name="pencil" size={18} color="orange" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(onOpenModal());
+                setData(data);
+              }}
+            >
+              <FontAwesome name="trash-o" size={20} color="red" />
+            </TouchableOpacity>
+          </View>
+        )}
+        <View className="w-1/5 items-center justify-center">
+          <View className="h-12 w-12 bg-green-500 rounded-full justify-center items-center">
             <Text className="text-white font-bold">
               {textAvatar(data.name)}
             </Text>
           </View>
         </View>
-        <View className="w-4/5 px-2 pb-2">
-          <Text className="text-xs">{data.phone}</Text>
-          <Text className="text-xs">
+        <View className="w-4/5 px-2">
+          <Text className="font-semibold">{data.name}</Text>
+          <Text className="text-sm">{data.phone}</Text>
+          <Text className="text-sm">
             {data.address +
               ", " +
               data.wardFullName +
@@ -78,7 +80,7 @@ const Card = ({ data, setData, showEdit }) => {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 const Customers = () => {
