@@ -16,10 +16,11 @@ import { search, toVND } from "../ultis/functions";
 import { ktsRequest } from "../ultis/connections";
 import { useDispatch, useSelector } from "react-redux";
 import { loaded, onLoading } from "../redux/systemSlice";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Entypo } from "@expo/vector-icons";
 import { Modal } from "react-native";
 import { Pressable } from "react-native";
 import { Alert } from "react-native";
+import { Header } from "../components";
 const STATUS = [
   {
     id: 0,
@@ -234,7 +235,7 @@ const Bills = () => {
             </View>
           </View>
         </Modal>
-        <Text className="p-2 mx-auto">Danh sách đơn hàng</Text>
+        <Header title={"danh sách đơn hàng"} fallBack={"Home"} />
         <View className="relative pb-2 w-full px-2">
           <TextInput
             className="px-4 py-3 bg-white border border-gray-200 rounded-2xl"

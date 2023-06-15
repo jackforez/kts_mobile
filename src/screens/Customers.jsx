@@ -29,6 +29,7 @@ import {
 } from "@expo/vector-icons";
 import MyPicker from "./MyPicker";
 import Modal from "./Modal";
+import { Header } from "../components";
 const Card = ({ data, setData, showEdit }) => {
   const dispatch = useDispatch();
   return (
@@ -270,7 +271,7 @@ const Customers = () => {
       )}
       <SafeAreaView className="flex-1 items-center bg-gray-50 w-full justify-between relative">
         {/* header */}
-        <Text className="p-2 mx-auto">Danh bạ khách hàng</Text>
+        <Header title={"danh bạ khách hàng"} fallBack={"Home"} />
         <View className="relative pb-2 w-full px-2">
           <TextInput
             className="px-2 py-3 bg-white border border-gray-200 rounded-md"
