@@ -38,7 +38,7 @@ const Card = ({ data, setData, showEdit }) => {
       className="rounded-2xl bg-white mt-2"
       onPress={() => setShowbuttons(!showButtons)}
     >
-      <View className="flex-row p-3 relative">
+      <View className="flex-row p-3 relative h-28 items-center">
         {showButtons && (
           <View className="flex-row p-2 absolute right-0 rounded-tr-xl rounded-bl-xl z-10 space-x-3 top-0 bg-orange-100">
             <TouchableOpacity
@@ -67,7 +67,7 @@ const Card = ({ data, setData, showEdit }) => {
           </View>
         </View>
         <View className="w-4/5 px-2">
-          <Text className="font-semibold">{data.name}</Text>
+          <Text className="font-semibold capitalize">{data.name}</Text>
           <Text className="text-sm">{data.phone}</Text>
           <Text className="text-sm">
             {data.address +
@@ -294,19 +294,19 @@ const Customers = () => {
               </Text>
               <View className="gap-2 flex-row">
                 <TouchableOpacity
-                  className="rounded-md p-2 border border-red-500"
+                  className="rounded-md py-2 px-2.5 bg-red-500"
                   onPress={() => {
                     setOpenAdd(false);
                     setOpenEdit(false);
                   }}
                 >
-                  <AntDesign name="close" size={18} color="red" />
+                  <AntDesign name="close" size={18} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  className="rounded-md p-2 border border-green-500"
+                  className="rounded-md p-2 bg-green-500"
                   onPress={handleSave}
                 >
-                  <FontAwesome name="floppy-o" size={20} color="#22c55e" />
+                  <FontAwesome name="floppy-o" size={20} color="white" />
                 </TouchableOpacity>
               </View>
             </View>
