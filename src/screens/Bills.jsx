@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   StyleSheet,
+  Button,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { TextInput } from "react-native";
@@ -21,6 +22,7 @@ import { Modal } from "react-native";
 import { Pressable } from "react-native";
 import { Alert } from "react-native";
 import { Header } from "../components";
+import DateTimePicker from "@react-native-community/datetimepicker";
 const STATUS = [
   {
     id: 0,
@@ -118,6 +120,31 @@ const Bills = () => {
   const [query, setQuery] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [details, setDetails] = useState({});
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const onChange1 = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setFromDate(currentDate);
+  };
+  const onChange2 = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setToDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    if (Platform.OS === "android") {
+      setShow(false);
+      // for iOS, add a button that closes the picker
+    }
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
   useEffect(() => {
     dispatch(onLoading());
     const fetch = async () => {
@@ -247,6 +274,23 @@ const Bills = () => {
           <View className="absolute top-2 right-5">
             <Feather name="search" size={24} color="rgb(156 163 175)" />
           </View>
+        </View>
+        {show && (
+          <DateTimePicker value={fromDate} mode="date" onChange={onChange1} />
+        )}
+        <View className="flex-row justify-between w-full px-3">
+          <Pressable
+            className="bg-white justify-center items-center p-3 rounded-xl"
+            onPress={() => setShow(true)}
+          >
+            <Text className="mx-auto">{fromDate.toLocaleDateString()}</Text>
+          </Pressable>
+          <Pressable
+            className="bg-white justify-center items-center p-3 rounded-xl"
+            onPress={() => setShow(true)}
+          >
+            <Text className="mx-auto">{toDate.toLocaleDateString()}</Text>
+          </Pressable>
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
