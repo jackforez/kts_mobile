@@ -21,9 +21,9 @@ import {
 import { Image } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import { ktsRequest } from "../ultis/connections";
 import { logout } from "../redux/userSlice";
+import { Myslider } from "../components";
 const imgs = [
   "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fbanners%2Fbanner1.jpg?alt=media&token=ab56333f-e2b4-4bcd-80f5-1defaf4adc9f",
   "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fbanners%2Fbanner2.jpg?alt=media&token=e16e39fd-1209-4e7b-896a-903d55ce3899",
@@ -36,7 +36,6 @@ const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { token } = currentUser;
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
   useEffect(() => {
     const checkToken = async () => {
       try {
@@ -58,19 +57,7 @@ const Dashboard = () => {
     };
     checkToken();
   }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          "https://api.sale168.vn/api/products/hotest/10"
-        );
-        setData(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
+
   return (
     <SafeAreaView className="flex-1 items-center bg-slate-50 justify-between">
       <ScrollView
@@ -132,7 +119,7 @@ const Dashboard = () => {
               return navigation.navigate("Bills");
             }}
           >
-            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-3xl p-2">
               <Ionicons name="md-documents" size={28} color="rgb(49 46 129)" />
               <Text className="text-xs pt-3">Đơn hàng</Text>
             </View>
@@ -146,6 +133,36 @@ const Dashboard = () => {
             <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
               <AntDesign name="contacts" size={28} color="rgb(49 46 129)" />
               <Text className="text-xs pt-3">Danh bạ</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="w-1/4 justify-center items-center px-1"
+            onPress={() => {
+              return navigation.navigate("Customers");
+            }}
+          >
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <MaterialCommunityIcons
+                name="google-analytics"
+                size={24}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Thống kê</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="w-1/4 justify-center items-center px-1"
+            onPress={() => {
+              return navigation.navigate("Customers");
+            }}
+          >
+            <View className="w-full justify-center items-center bg-indigo-50 rounded-md p-2">
+              <MaterialCommunityIcons
+                name="google-analytics"
+                size={24}
+                color="rgb(49 46 129)"
+              />
+              <Text className="text-xs pt-3">Tra cứu</Text>
             </View>
           </TouchableOpacity>
           {currentUser.role !== "shop" && (
@@ -178,31 +195,7 @@ const Dashboard = () => {
         <Text className="px-2 pt-6 pb-2 font-semibold text-indigo-900">
           Sản phẩm cung cấp bởi Dichoho.top
         </Text>
-        <ScrollView
-          className="py-2 w-full"
-          pagingEnabled
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          {data.map((d, i) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  Linking.openURL(`https://dichoho.top/products/${d._id}`);
-                }}
-                key={i}
-              >
-                <View className="w-[45vw] px-1">
-                  <Image
-                    key={i}
-                    source={{ uri: d.imgs[0] }}
-                    className="w-full aspect-square object-cover rounded-md overflow-hidden"
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
+        <Myslider />
       </ScrollView>
     </SafeAreaView>
   );
