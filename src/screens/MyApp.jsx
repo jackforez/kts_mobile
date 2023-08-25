@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector } from "react-redux";
 import {
@@ -15,7 +15,15 @@ import {
   Resetpwd,
   Shops,
 } from ".";
+import { Image, ImageBackground, View } from "react-native";
 const Stack = createNativeStackNavigator();
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "red",
+  },
+};
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
   return (
