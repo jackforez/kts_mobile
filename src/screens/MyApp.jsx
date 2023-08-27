@@ -6,6 +6,7 @@ import {
   Bills,
   Cost,
   Customers,
+  Dashboard,
   Details,
   Layout,
   Login,
@@ -13,45 +14,55 @@ import {
   Profile,
   Register,
   Resetpwd,
+  Setting,
   Shops,
 } from ".";
-import { Image, ImageBackground, View } from "react-native";
+import { ImageBackground } from "react-native";
 const Stack = createNativeStackNavigator();
-const MyTheme = {
+const navTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    primary: "red",
+    background: "transparent",
   },
 };
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{ headerShown: false }}
-      >
-        {currentUser ? (
-          <>
-            <Stack.Screen name="Layout" component={Layout} />
-            <Stack.Screen name="Bills" component={Bills} />
-            <Stack.Screen name="Customers" component={Customers} />
-            <Stack.Screen name="Cost" component={Cost} />
-            <Stack.Screen name="Shops" component={Shops} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="NewShop" component={NewShop} />
-            <Stack.Screen name="Details" component={Details} />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Resetpwd" component={Resetpwd} />
-            <Stack.Screen name="Register" component={Register} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ImageBackground
+      source={require("../constant/ktsbg.jpeg")}
+      className="absolute h-full w-full"
+    >
+      <NavigationContainer theme={navTheme}>
+        <Stack.Navigator
+          initialRouteName="Dashboard"
+          screenOptions={{
+            headerShown: false,
+            animation: "none",
+          }}
+        >
+          {currentUser ? (
+            <>
+              <Stack.Screen name="Dashboard" component={Dashboard} />
+              <Stack.Screen name="Bills" component={Bills} />
+              <Stack.Screen name="Customers" component={Customers} />
+              <Stack.Screen name="Cost" component={Cost} />
+              <Stack.Screen name="Shops" component={Shops} />
+              <Stack.Screen name="Profile" component={Profile} />
+              <Stack.Screen name="NewShop" component={NewShop} />
+              <Stack.Screen name="Details" component={Details} />
+              <Stack.Screen name="Setting" component={Setting} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Resetpwd" component={Resetpwd} />
+              <Stack.Screen name="Register" component={Register} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ImageBackground>
   );
 };
 

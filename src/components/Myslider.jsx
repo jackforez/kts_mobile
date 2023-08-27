@@ -16,7 +16,7 @@ const Myslider = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "https://api.sale168.vn/api/products/hotest/10"
+          "https://api.sale168.vn/api/products/hotest/6"
         );
         setData(res.data);
       } catch (error) {
@@ -27,7 +27,7 @@ const Myslider = () => {
   }, []);
   return (
     <ScrollView
-      className="py-2 w-full"
+      className="px-1 py-2 w-full bg-white/30 rounded-md"
       pagingEnabled
       horizontal
       showsHorizontalScrollIndicator={false}

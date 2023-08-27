@@ -181,7 +181,7 @@ const Bills = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1 justify-between items-center w-full"
     >
-      <SafeAreaView className="flex-1 items-center bg-slate-200 w-full px-4 justify-between">
+      <SafeAreaView className="flex-1 items-center bg-black/30 w-full px-4 justify-between">
         {/* header */}
 
         <Modal
@@ -262,7 +262,7 @@ const Bills = () => {
             </View>
           </View>
         </Modal>
-        <Header title={"danh sách đơn hàng"} fallBack={"Home"} />
+        <Header title={"danh sách đơn hàng"} />
         <View className="relative pb-2 w-full px-2">
           <TextInput
             className="px-4 py-3 bg-white border border-gray-200 rounded-3xl"
@@ -324,10 +324,14 @@ const Bills = () => {
                   {loading ? (
                     <View className="flex h-full w-full items-center justify-center flex-col">
                       {/* <img src={logo} alt="" className="animate-bounce w-20" /> */}
-                      <Text>Đang tải dữ liệu ...</Text>
+                      <Text className="text-white font-semibold">
+                        Đang tải dữ liệu ...
+                      </Text>
                     </View>
                   ) : (
-                    <Text>Không có dữ liệu</Text>
+                    <Text className="text-white font-semibold">
+                      Không có dữ liệu
+                    </Text>
                   )}
                 </View>
               )}

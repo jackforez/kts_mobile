@@ -102,6 +102,7 @@ const Customers = () => {
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   useEffect(() => {
+    dispatch(onLoading());
     const fetchCustomers = async () => {
       try {
         const res = await ktsRequest.get(`/v2/customers/my`, {
@@ -110,7 +111,9 @@ const Customers = () => {
           },
         });
         setCustomers(res.data);
+        dispatch(loaded());
       } catch (error) {
+        dispatch(loaded());
         alert.error(error);
       }
     };
@@ -241,7 +244,7 @@ const Customers = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1 justify-between items-center w-full bg-red-500"
+      className="flex-1 justify-between items-center w-full bg-black/30"
     >
       {openModal && (
         <Modal>
@@ -271,7 +274,7 @@ const Customers = () => {
           </View>
         </Modal>
       )}
-      <SafeAreaView className="flex-1 items-center bg-slate-200 w-full justify-between relative">
+      <SafeAreaView className="flex-1 items-center w-full justify-between relative">
         {/* header */}
         <Header title={"danh bạ khách hàng"} fallBack={"Home"} />
         <View className="relative pb-2 w-full px-2">
@@ -403,10 +406,14 @@ const Customers = () => {
                 <View className="py-3 text-center">
                   {loading ? (
                     <View className="flex h-full w-full items-center justify-center flex-col">
-                      <Text>Đang tải dữ liệu ...</Text>
+                      <Text className="text-white font-semibold">
+                        Đang tải dữ liệu ...
+                      </Text>
                     </View>
                   ) : (
-                    <Text>Không có dữ liệu</Text>
+                    <Text className="text-white font-semibold">
+                      Không có dữ liệu
+                    </Text>
                   )}
                 </View>
               )}

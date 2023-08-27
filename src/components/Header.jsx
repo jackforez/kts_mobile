@@ -9,10 +9,12 @@ const Header = ({ title, fallBack }) => {
 
   return (
     <View className="flex-row items-center justify-between w-full p-3">
-      <Pressable onPress={() => navigation.navigate(fallBack)}>
-        <Entypo name="chevron-left" size={24} color="black" />
+      <Pressable onPress={() => navigation.goBack()}>
+        <Entypo name="chevron-left" size={24} color="white" />
       </Pressable>
-      <Text className="p-2 text-lg font-semibold uppercase ">{title}</Text>
+      <Text className="p-2 text-lg font-semibold uppercase text-white">
+        {title}
+      </Text>
     </View>
   );
 };
