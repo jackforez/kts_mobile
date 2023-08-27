@@ -276,7 +276,7 @@ const Customers = () => {
       )}
       <SafeAreaView className="flex-1 items-center w-full justify-between relative">
         {/* header */}
-        <Header title={"danh bạ khách hàng"} fallBack={"Home"} />
+        <Header title={"danh bạ khách hàng"} />
         <View className="relative pb-2 w-full px-2">
           <TextInput
             className="px-2 py-3 bg-white rounded-3xl"

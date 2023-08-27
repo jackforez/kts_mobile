@@ -26,9 +26,9 @@ const Setting = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   return (
-    <SafeAreaView className="flex-1 items-center justify-center">
+    <SafeAreaView className="flex-1 items-center justify-center bg-black/30">
       <TouchableOpacity
-        className="p-3 rounded-md border border-indigo-900"
+        className="p-3 rounded-md bg-white"
         onPress={() => {
           dispatch(logout());
         }}

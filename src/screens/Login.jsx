@@ -97,7 +97,7 @@ const Login = () => {
       });
       dispatch(loaded());
       dispatch(loginSuccess(res.data));
-      return navigation.navigate("Layout");
+      return navigation.navigate("Dashboard");
     } catch (error) {
       dispatch(loaded());
       alert("Sai tên đăng nhập hoặc mật khẩu");

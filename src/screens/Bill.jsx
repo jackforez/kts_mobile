@@ -25,7 +25,7 @@ import {
   onLoading,
   onOpenModal,
 } from "../redux/systemSlice";
-import { Modal, MyButton } from "../components";
+import { Header, Modal, MyButton } from "../components";
 const Bill = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { loading, openModal } = useSelector((state) => state.system);
@@ -255,7 +255,8 @@ const Bill = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1 justify-between items-center w-full bg-white"
     >
-      <SafeAreaView className="flex-1 items-center bg-white justify-between">
+      <SafeAreaView className="flex-1 w-full items-center bg-white justify-between">
+        <Header title="tạo mới đơn hàng" dark={true} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}

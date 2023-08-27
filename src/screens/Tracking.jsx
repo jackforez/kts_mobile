@@ -8,6 +8,7 @@ import {
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native";
 import { ktsRequest } from "../ultis/connections";
+import { Header } from "../components";
 
 const Tracking = () => {
   const [loading, setLoading] = useState(false);
@@ -58,11 +59,11 @@ const Tracking = () => {
       });
   };
   return (
-    <SafeAreaView className="flex-1 bg-white items-center">
-      <View className="items-center p-4 justify-center rounded-md space-y-4 w-[95%] bg-white/50 flex text-white backdrop-blur drop-shadow-lg bg-opacity-10">
-        <Text className="text-indigo-900">Mã vận đơn</Text>
+    <SafeAreaView className="flex-1 items-center bg-black/30">
+      <Header title={"Tra cứu đơn hàng"} />
+      <View className="items-center p-4 justify-center rounded-xl space-y-4 w-full text-white backdrop-blur drop-shadow-lg bg-opacity-10">
         <TextInput
-          className="w-full bg-white p-4 rounded-md border border-indigo-900"
+          className="w-full bg-white p-4 rounded-md"
           placeholder="Nhập mã vận đơn, ví dụ KTS123456789"
           onChangeText={(text) => setOrderId(text)}
         />
@@ -79,7 +80,7 @@ const Tracking = () => {
         <View className="w-full">
           {orderDetails.TBL_DELIVERY?.length > 0 ? (
             <View
-              className={`bg-white 
+              className={`bg-white
                 border ${
                   getStatus(orderDetails.TBL_DELIVERY[0].STATUSTEXT).bcolor
                 }
@@ -121,7 +122,9 @@ const Tracking = () => {
               </Text>
             </View>
           ) : (
-            <Text>Chưa có dữ liệu trạng thái</Text>
+            <Text className="text-white self-center">
+              Chưa có dữ liệu trạng thái
+            </Text>
           )}
         </View>
         <ScrollView
@@ -133,7 +136,7 @@ const Tracking = () => {
             orderDetails.TBL_DINH_VI.map((i, index) => {
               return (
                 <View
-                  className="mt-2 rounded border-l-4 border-red-500 p-2"
+                  className="mt-2 rounded-md border-l-4 border-red-500 p-2 bg-white"
                   key={index}
                 >
                   <Text className="font-semibold tracking-wide">
@@ -147,7 +150,9 @@ const Tracking = () => {
               );
             })
           ) : (
-            <Text>Không có dữ liệu chi tiết</Text>
+            <Text className="text-white self-center">
+              Không có dữ liệu chi tiết
+            </Text>
           )}
         </ScrollView>
       </View>

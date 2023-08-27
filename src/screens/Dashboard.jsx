@@ -132,7 +132,7 @@ const Dashboard = () => {
           <TouchableOpacity
             className="w-1/5 aspect-square items-center justify-start rounded-2xl p-2"
             onPress={() => {
-              return navigation.navigate("Bills");
+              return navigation.navigate("NewBill");
             }}
           >
             <View className="rounded-2xl bg-cyan-500 w-full h-full items-center justify-center">
@@ -145,7 +145,7 @@ const Dashboard = () => {
           <TouchableOpacity
             className="w-1/5 aspect-square items-center justify-start rounded-2xl p-2"
             onPress={() => {
-              return navigation.navigate("Bills");
+              return navigation.navigate("Analytic");
             }}
           >
             <View className="rounded-2xl bg-cyan-500 w-full h-full items-center justify-center">
@@ -162,7 +162,7 @@ const Dashboard = () => {
           <TouchableOpacity
             className="w-1/5 aspect-square items-center justify-start rounded-2xl p-2"
             onPress={() => {
-              return navigation.navigate("Bills");
+              return navigation.navigate("Tracking");
             }}
           >
             <View className="rounded-2xl bg-cyan-500 w-full h-full items-center justify-center">
@@ -194,7 +194,7 @@ const Dashboard = () => {
             <TouchableOpacity
               className="w-1/3 h-32 items-center justify-start rounded-2xl"
               onPress={() => {
-                return navigation.navigate("Bills");
+                return navigation.navigate("Customers");
               }}
             >
               <View className="w-full p-8">
@@ -214,7 +214,7 @@ const Dashboard = () => {
                 <TouchableOpacity
                   className="w-1/3 aspect-square items-center justify-start rounded-2xl"
                   onPress={() => {
-                    return navigation.navigate("Bills");
+                    return navigation.navigate("Shops");
                   }}
                 >
                   <View className="w-full p-8">
@@ -229,7 +229,7 @@ const Dashboard = () => {
                 <TouchableOpacity
                   className="w-1/3 aspect-square items-center justify-start rounded-2xl"
                   onPress={() => {
-                    return navigation.navigate("Bills");
+                    return navigation.navigate("Cost");
                   }}
                 >
                   <View className="w-full p-8">
@@ -307,7 +307,7 @@ const Dashboard = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View className="w-[95vw] py-2 px-1 h-52 rounded-md">
+            <View className="w-[95vw] py-2 px-1 h-56 rounded-md">
               <Image
                 source={{
                   uri: post.thumbnail,
