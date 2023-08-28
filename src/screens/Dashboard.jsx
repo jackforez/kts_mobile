@@ -10,6 +10,7 @@ import {
   ImageBackground,
   Pressable,
   Button,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -39,7 +40,7 @@ const Dashboard = () => {
   const navigation = useNavigation();
   const { currentUser } = useSelector((state) => state.user);
   const { token } = currentUser;
-  const [post, setPost] = useState({});
+  const [posts, setPosts] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     const checkToken = async () => {
@@ -52,7 +53,7 @@ const Dashboard = () => {
       } catch (err) {
         if (err.response) {
           if (err.response.data.status === 403) {
-            alert.alert("Phiên làm việc hết hạn", " vui lòng đăng nhập lại!");
+            Alert.alert("Phiên làm việc hết hạn", " vui lòng đăng nhập lại!");
             dispatch(logout());
           }
         } else {
@@ -65,10 +66,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const res = await sale168Request.get(
-          "https://api.sale168.vn/api/posts/64bb56f78197f230d267d848"
-        );
-        setPost(res.data);
+        const res = await sale168Request.get("/posts/latest/2");
+        setPosts(res.data);
       } catch (err) {
         console.log(err);
         alert("Network Error!");
@@ -277,66 +276,45 @@ const Dashboard = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
           >
-            <View className="w-[95vw] py-2 px-1 h-52 rounded-md ">
-              <Image
-                resizeMode="cover"
-                source={{
-                  uri: "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fposts%2F647acc18c4cae99ae44509f2%2F1689998945964647acc18c4cae99ae44509f2_Promotion.4350a3e2360fec3b8741.png?alt=media&token=2953c431-929a-428d-ab23-07a7300e28a0",
-                }}
-                className="w-full h-32 rounded-md"
-              />
-              <View className="flex-row justify-center items-center px-2">
-                <View className="px-2 flex-1">
-                  <Text className="text-white mt-3 font-semibold ">
-                    {post.title}
-                  </Text>
-                  <View className="py-1 flex-row items-center">
-                    <AntDesign name="calendar" size={20} color="white" />
-                    <Text className="px-2 text-white">
-                      {new Date(post.createdAt).toLocaleDateString()}
-                    </Text>
+            {posts &&
+              posts.map((post, i) => {
+                return (
+                  <View className="w-[95vw] py-2 px-1 h-52 rounded-md " key={i}>
+                    <Image
+                      resizeMode="cover"
+                      source={{
+                        uri: post.thumbnail,
+                      }}
+                      className="w-full h-32 rounded-md"
+                    />
+                    <View className="flex-row justify-center items-center px-2">
+                      <View className="px-2 flex-1">
+                        <Text className="text-white mt-3 font-semibold ">
+                          {post.title}
+                        </Text>
+                        <View className="py-1 flex-row items-center">
+                          <AntDesign name="calendar" size={20} color="white" />
+                          <Text className="px-2 text-white">
+                            {new Date(post.createdAt).toLocaleDateString()}
+                          </Text>
+                        </View>
+                      </View>
+                      <TouchableOpacity
+                        className="py-3 px-4 rounded-md bg-orange-500"
+                        onPress={() =>
+                          Linking.openURL(
+                            `https://dichoho.top/news/${post._id}`
+                          )
+                        }
+                      >
+                        <Text className="text-white font-semibold">
+                          Chi tiết
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-                <TouchableOpacity
-                  className="py-3 px-4 rounded-md bg-orange-500"
-                  onPress={() =>
-                    Linking.openURL(`https://dichoho.top/news/${post._id}`)
-                  }
-                >
-                  <Text className="text-white font-semibold">Chi tiết</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View className="w-[95vw] py-2 px-1 h-56 rounded-md">
-              <Image
-                source={{
-                  uri: post.thumbnail,
-                }}
-                className="w-[95vw] h-32 rounded-md"
-                resizeMode="cover"
-              />
-              <View className="flex-row justify-center items-center px-2">
-                <View className="px-2 flex-1 ">
-                  <Text className="text-white mt-3 font-semibold ">
-                    {post.title}
-                  </Text>
-                  <View className="py-1 flex-row items-center">
-                    <AntDesign name="calendar" size={20} color="white" />
-                    <Text className="px-2 text-white">
-                      {new Date(post.createdAt).toLocaleDateString()}
-                    </Text>
-                  </View>
-                </View>
-                <TouchableOpacity
-                  className="py-3 px-4 rounded-md bg-orange-500"
-                  onPress={() =>
-                    Linking.openURL(`https://dichoho.top/news/${post._id}`)
-                  }
-                >
-                  <Text className="text-white font-semibold">Chi tiết</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+                );
+              })}
           </ScrollView>
         </View>
       </ScrollView>
