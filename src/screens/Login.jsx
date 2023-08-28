@@ -12,17 +12,25 @@ import {
   View,
 } from "react-native";
 import logo from "../constant/logo.jpg";
+import { Modal, MyButton } from "../components";
 import { ktsRequest } from "../ultis/connections";
+import LottieView from "lottie-react-native";
+
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { onLoading, loaded } from "../redux/systemSlice";
+import {
+  onLoading,
+  loaded,
+  onOpenModal,
+  onCloseModal,
+} from "../redux/systemSlice";
 import { loginSuccess } from "../redux/userSlice";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 //navigation
 
 const Login = () => {
-  const { loading } = useSelector((state) => state.system);
+  const { loading, openModal } = useSelector((state) => state.system);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
@@ -100,7 +108,7 @@ const Login = () => {
       return navigation.navigate("Dashboard");
     } catch (error) {
       dispatch(loaded());
-      alert("Sai tên đăng nhập hoặc mật khẩu");
+      dispatch(onOpenModal());
     }
   };
   return (
@@ -373,6 +381,29 @@ const Login = () => {
             </View>
           </View>
         </ScrollView>
+        {openModal && (
+          <Modal>
+            <View className="bg-white p-3 rounded-xl w-full">
+              <LottieView
+                source={require("../../assets/error.json")}
+                className="h-32 w-32 mx-auto"
+                autoPlay={true}
+                loop={false}
+              />
+              <Text className="font-bold pt-3 pb-6 mx-auto">
+                Sai tên đăng nhập hoặc mật khẩu
+              </Text>
+              <MyButton
+                variant={"danger"}
+                size={"md"}
+                textStyle="uppercase font-bold"
+                callback={() => dispatch(onCloseModal())}
+              >
+                Đóng
+              </MyButton>
+            </View>
+          </Modal>
+        )}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );
