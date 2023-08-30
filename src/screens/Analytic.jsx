@@ -54,7 +54,6 @@ const Analytic = () => {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
   const [percentData, setPercentData] = useState([]);
-  const [monthLabels, setMonthLabels] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
