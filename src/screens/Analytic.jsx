@@ -7,10 +7,32 @@ import {
   Dimensions,
 } from "react-native";
 import { Header } from "../components";
-import { PieChart } from "react-native-chart-kit";
-
+import { LineChart, PieChart } from "react-native-chart-kit";
+import { useEffect, useState } from "react";
+import { ktsRequest } from "../ultis/connections";
+import { useSelector } from "react-redux";
 const Analytic = () => {
   const screenWidth = Dimensions.get("window").width;
+  const { currentUser } = useSelector((state) => state.user);
+  const { token } = currentUser;
+  const [dataSet, setDataSet] = useState();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await ktsRequest.get("/v2/bills/report", {
+          headers: {
+            "Content-Type": "Application/json",
+            Authorization: `Beare ${token}`,
+          },
+        });
+        setDataSet(res.data);
+        console.log(res.data);
+      } catch (error) {
+        alert(error);
+      }
+    };
+    fetchData();
+  }, []);
   const data = [
     {
       name: "Đơn mới",
@@ -51,13 +73,37 @@ const Analytic = () => {
     barPercentage: 0.5,
     useShadowColorFromDataset: false, // optional
   };
-  const customers = [
-    { id: 1, name: "Anh Tiến", sl: 159 },
-    { id: 1, name: "Anh Sang", sl: 123 },
-    { id: 1, name: "Anh Văn", sl: 111 },
-    { id: 1, name: "Anh Khánh", sl: 78 },
-    { id: 1, name: "Anh Minh", sl: 12 },
-  ];
+  const chartConfig1 = {
+    backgroundGradientFrom: "#fff",
+    backgroundGradientFromOpacity: 1,
+    backgroundGradientTo: "#fff",
+    backgroundGradientToOpacity: 1,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+  const data1 = {
+    labels: [
+      "T1",
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6",
+      "T7",
+      "T8",
+      "T9",
+      "T10",
+      "T11",
+      "T12",
+    ],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99, 43],
+      },
+    ],
+  };
   return (
     <SafeAreaView className="bg-black/50 flex-1 items-center">
       <Header title={"Phân tích dữ liệu"} />
@@ -77,7 +123,20 @@ const Analytic = () => {
         </View>
         <View className="bg-black/20 w-full rounded-xl mt-6 p-3">
           <Text className="font-semibold uppercase text-white mb-3">
-            Khách hàng mua nhiều nhất
+            lượng đơn
+          </Text>
+          <View className="bg-slate-200 rounded-lg w-full round p-2">
+            <LineChart
+              data={data1}
+              width={screenWidth * 0.82}
+              height={180}
+              chartConfig={chartConfig1}
+            />
+          </View>
+        </View>
+        <View className="bg-black/20 w-full rounded-xl mt-6 p-3">
+          <Text className="font-semibold uppercase text-white mb-3">
+            Top khách hàng
           </Text>
           <View className="bg-slate-200 rounded-lg w-full round p-2">
             <View className="flex-row w-full py-2">
@@ -85,15 +144,22 @@ const Analytic = () => {
               <Text className="font-bold  uppercase w-3/5 ">Tên</Text>
               <Text className="font-bold  uppercase w-1/5 text-center">SL</Text>
             </View>
-            {customers.map((c, i) => {
-              return (
-                <View className="flex-row w-full divide-y py-1">
-                  <Text className=" w-1/5 text-center">{i + 1}</Text>
-                  <Text className="capitalize w-3/5 ">{c.name}</Text>
-                  <Text className="w-1/5 text-center">{c.sl}</Text>
-                </View>
-              );
-            })}
+            {dataSet &&
+              dataSet?.theMost.map((i, index) => {
+                return (
+                  <View className="flex-row w-full py-2" key={index}>
+                    <Text className="font-bold  uppercase w-1/5 text-center">
+                      {index + 1}
+                    </Text>
+                    <Text className="font-bold  uppercase w-3/5 ">
+                      {i._id.name}
+                    </Text>
+                    <Text className="font-bold  uppercase w-1/5 text-center">
+                      {i.soluong}
+                    </Text>
+                  </View>
+                );
+              })}
           </View>
         </View>
       </ScrollView>
