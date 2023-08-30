@@ -11,11 +11,50 @@ import { LineChart, PieChart } from "react-native-chart-kit";
 import { useEffect, useState } from "react";
 import { ktsRequest } from "../ultis/connections";
 import { useSelector } from "react-redux";
+const STATUS_COLOR = [
+  {
+    name: "Đơn mới",
+    color: "#3b82f6",
+    legendFontColor: "white",
+    legendFontSize: 15,
+  },
+  {
+    name: "Đang giao",
+    color: "#facc15",
+    legendFontColor: "white",
+    legendFontSize: 15,
+  },
+  {
+    name: "Giao xong",
+    color: "#22c55e",
+    legendFontColor: "white",
+    legendFontSize: 15,
+  },
+  {
+    name: "Đơn hủy",
+    color: "#ef4444",
+    legendFontColor: "white",
+    legendFontSize: 15,
+  },
+  {
+    name: "Chuyển hoàn",
+    color: "#94a3b8",
+    legendFontColor: "white",
+    legendFontSize: 15,
+  },
+];
+const labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
 const Analytic = () => {
   const screenWidth = Dimensions.get("window").width;
   const { currentUser } = useSelector((state) => state.user);
   const { token } = currentUser;
   const [dataSet, setDataSet] = useState();
+  const [monthData, setMonthData] = useState([
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+  const [percentData, setPercentData] = useState([]);
+  const [monthLabels, setMonthLabels] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,43 +65,30 @@ const Analytic = () => {
           },
         });
         setDataSet(res.data);
-        console.log(res.data);
+        res.data.month.forEach((element) => {
+          setMonthData((prev) =>
+            prev.map((m, i) => {
+              return i == element._id - 1 ? element.soluong : m;
+            })
+          );
+        });
+
+        res.data.percent.forEach((e) => {
+          const color = STATUS_COLOR.find((c) =>
+            c.name.toLowerCase().includes(e._id.toLowerCase())
+          );
+          if (color) {
+            setPercentData((prev) => {
+              return [...prev, { ...color, population: e.soluong }];
+            });
+          }
+        });
       } catch (error) {
         alert(error);
       }
     };
     fetchData();
   }, []);
-  const data = [
-    {
-      name: "Đơn mới",
-      population: 15,
-      color: "#3b82f6",
-      legendFontColor: "white",
-      legendFontSize: 15,
-    },
-    {
-      name: "Đang giao",
-      population: 20,
-      color: "#facc15",
-      legendFontColor: "white",
-      legendFontSize: 15,
-    },
-    {
-      name: "Giao xong",
-      population: 60,
-      color: "#22c55e",
-      legendFontColor: "white",
-      legendFontSize: 15,
-    },
-    {
-      name: "Đơn hủy",
-      population: 10,
-      color: "#ef4444",
-      legendFontColor: "white",
-      legendFontSize: 15,
-    },
-  ];
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
     backgroundGradientFromOpacity: 0,
@@ -79,38 +105,34 @@ const Analytic = () => {
     backgroundGradientTo: "#fff",
     backgroundGradientToOpacity: 1,
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
+    strokeWidth: 1, // optional, default 3
     barPercentage: 0.5,
     useShadowColorFromDataset: false, // optional
+    decimalPlaces: 0, // optional, defaults to 2dp
+    style: {
+      borderRadius: 16,
+    },
+    propsForDots: {
+      r: "3",
+      strokeWidth: "2",
+      stroke: "#ffa726",
+    },
   };
   const data1 = {
-    labels: [
-      "T1",
-      "T2",
-      "T3",
-      "T4",
-      "T5",
-      "T6",
-      "T7",
-      "T8",
-      "T9",
-      "T10",
-      "T11",
-      "T12",
-    ],
+    labels: labels,
     datasets: [
       {
-        data: [20, 45, 28, 80, 99, 43],
+        data: monthData,
       },
     ],
   };
   return (
     <SafeAreaView className="bg-black/50 flex-1 items-center">
       <Header title={"Phân tích dữ liệu"} />
-      <ScrollView className="w-full px-4">
+      <ScrollView className="w-full px-4" showsVerticalScrollIndicator={false}>
         <View className="bg-black/20 h-48 w-full rounded-xl">
           <PieChart
-            data={data}
+            data={percentData}
             width={screenWidth * 0.9}
             height={180}
             chartConfig={chartConfig}
@@ -128,9 +150,10 @@ const Analytic = () => {
           <View className="bg-slate-200 rounded-lg w-full round p-2">
             <LineChart
               data={data1}
-              width={screenWidth * 0.82}
+              width={screenWidth * 0.81}
               height={180}
               chartConfig={chartConfig1}
+              yLabelsOffset={24}
             />
           </View>
         </View>
@@ -141,20 +164,20 @@ const Analytic = () => {
           <View className="bg-slate-200 rounded-lg w-full round p-2">
             <View className="flex-row w-full py-2">
               <Text className="font-bold  uppercase w-1/5 text-center">#</Text>
-              <Text className="font-bold  uppercase w-3/5 ">Tên</Text>
+              <Text className="font-bold  uppercase w-3/5 ">shop</Text>
               <Text className="font-bold  uppercase w-1/5 text-center">SL</Text>
             </View>
             {dataSet &&
               dataSet?.theMost.map((i, index) => {
                 return (
                   <View className="flex-row w-full py-2" key={index}>
-                    <Text className="font-bold  uppercase w-1/5 text-center">
+                    <Text className="font-semibold  w-1/5 text-center">
                       {index + 1}
                     </Text>
-                    <Text className="font-bold  uppercase w-3/5 ">
+                    <Text className="font-semibold  capitalize w-3/5 ">
                       {i._id.name}
                     </Text>
-                    <Text className="font-bold  uppercase w-1/5 text-center">
+                    <Text className="font-semibold  w-1/5 text-center">
                       {i.soluong}
                     </Text>
                   </View>
