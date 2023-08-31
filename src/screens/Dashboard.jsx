@@ -29,6 +29,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ktsRequest, sale168Request } from "../ultis/connections";
 import { logout } from "../redux/userSlice";
 import { Myslider } from "../components";
+import { textAvatarOne } from "../ultis/functions";
 const imgs = [
   "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fbanners%2Fbanner1.jpg?alt=media&token=ab56333f-e2b4-4bcd-80f5-1defaf4adc9f",
   "https://firebasestorage.googleapis.com/v0/b/dichoho-4e879.appspot.com/o/images%2Fbanners%2Fbanner2.jpg?alt=media&token=e16e39fd-1209-4e7b-896a-903d55ce3899",
@@ -88,7 +89,9 @@ const Dashboard = () => {
           <TouchableOpacity onPress={() => navigation.navigate("Setting")}>
             <View className="flex-row items-center gap-2">
               <View className="h-12 w-12 bg-white rounded-full justify-center items-center">
-                <Text className="text-indigo-900 font-bold">V</Text>
+                <Text className="text-indigo-900 font-bold">
+                  {textAvatarOne(currentUser?.displayName || "Ktscorp.vn")}
+                </Text>
               </View>
               <View>
                 <Text className="text-base text-white">
@@ -100,9 +103,17 @@ const Dashboard = () => {
               </View>
             </View>
           </TouchableOpacity>
-          <View>
-            <Ionicons name="notifications" size={28} color="white" />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch(logout());
+            }}
+          >
+            <View className="bg-white/30 rounded-full">
+              <Text className="text-white px-4 py-2 font-semibold">
+                Đăng xuất
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
         {/* end header */}
         {/* slider */}
